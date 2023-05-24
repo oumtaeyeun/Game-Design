@@ -1,0 +1,13 @@
+Script started on Sun 18 Sep 2022 09:17:07 PM EDT
+]0;toum3@gamedev:~/public_html[?1034h[toum3@gamedev public_html]$ ls -l
+total 24
+-rw-rw-r--. 1 toum3 toum3 1584 Sep 18 20:27 [0m[01;35mgsuG.png[0m
+-rw-rw-r--. 1 toum3 toum3  519 Sep 11 21:47 hmwk3.txt
+-rw-rw-r--. 1 toum3 toum3    0 Sep 18 21:17 hmwk4.txt
+-rwxr-xr-x. 1 toum3 toum3  346 Sep 11 21:27 [01;32mindex.html[0m
+-rw-r--r--. 1 toum3 toum3 1712 Sep 11 21:11 [01;35mPounce.png[0m
+-rw-r--r--. 1 toum3 toum3 5054 Sep 18 21:15 simple_animation.html
+]0;toum3@gamedev:~/public_html[toum3@gamedev public_html]$ exit
+exit
+
+Script done on Sun 18 Sep 2022 09:17:24 PM EDT

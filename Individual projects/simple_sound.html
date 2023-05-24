@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>A simple sound example</title>
+</head>
+<body>
+
+<audio id="audio1" src="sound_example/grain_bag.ogg" preload="auto" >
+</audio>
+
+<script type="application/javascript">
+  sound1 = document.getElementById('audio1');
+</script>
+
+<br> Press the button to hear a sound. <br> <br>
+
+<button type="button" onclick="sound1.play(); return false"/>play</button>
+
+</body>
+</html>
+

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Dialog - by Michael Weeks</title>
+
+<script type="application/javascript">
+// <![CDATA[
+
+var theCanvas;
+var theContext;
+var CANVASWIDTH = 640;
+var CANVASHEIGHT = 480;
+var gameover = false;
+
+
+var mydialog = new Array();            // Array of options
+var prompt = "Select your response";   // Instructions for user
+var optionKeys = "ABCD";               // Possible options
+var optionKeyIndex = 0;                // Index into optionKeys
+                                       // (which option the user chose)
+
+function green()
+{
+  document.bgColor = "#0f6000";
+  Fill = "#0f6000";
+}
+
+
+function show_dialog()
+{
+  if(!gameover)
+  {
+  var Yspace = 22;
+  var Yloc = 40;
+  var Xloc = 70;
+
+  theContext.clearRect(0, 0, CANVASWIDTH, CANVASHEIGHT);
+  theContext.fillStyle = "white";
+  theContext.font = "bold 16px Arial";
+
+  var line;
+
+  // Show the prompt
+  theContext.fillText(prompt, Xloc, Yloc);
+  Yloc += Yspace;
+
+  // Now show the options.
+  // Make sure that this does not show more options than supported (4).
+  for (var m=0; (m<mydialog.length) && (m<optionKeys.length); m++)
+  {
+    // Build the line of text, e.g. if the first one has text "hello"
+    // then line should be "A. hello"
+    line = optionKeys[m] + ". " + mydialog[m].text;
+    // Show this line on the canvas
+    theContext.fillText(line, Xloc, Yloc);  
+    // Update Yloc to the next line down. 
+    // We do not update Xloc, since all lines should be left-justified.
+    Yloc += Yspace;
+  }
+  }
+}
+
+
+// Given a string (str), add it to the list of options.
+function add_to_options(str)
+{
+  mydialog.push({text:str});
+}
+
+
+// Given an index, remove the corresponding text from the list of options.
+function del_from_options(index)
+{
+  mydialog.splice(index, 1);
+}
+
+
+// The "paragraph" is literally a paragraph that shows on the screen.
+// This is mostly for debugging. It logs the user's interactions.
+// Given the string str, append it to the text in the paragraph.
+function add_to_paragraph(str)
+{
+  var oldstuff = document.getElementById("results").innerHTML;
+  // console.log("old stuff is " + oldstuff);
+  oldstuff += str;
+  document.getElementById("results").innerHTML = oldstuff;
+}
+var eviCount = 0;
+var evidence = true;
+var car = false;
+var followup = false;
+
+// Call the function to process this input.
+function processResponse()
+{
+  var valid = false;
+  // The user pressed a key, and optionKeyIndex should be updated.
+  // First, make sure the key pressed is a valid choice.
+  if (optionKeyIndex > -1)
+  {
+    if(evidence)
+    {
+      // Is there an option for this key? E.g. this program expects that
+      // A, B, C, or D are valid choices, but if the options are "True" and
+      // "False" only, then C and D are invalid.
+      add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, [" + mydialog[optionKeyIndex].text + "]<br>");
+      if(optionKeyIndex <= 2 - eviCount)
+      {
+        if(optionKeyIndex == 0 && eviCount == 0)
+        {
+          del_from_options(optionKeyIndex);
+          add_to_paragraph("No, no shots. I'd remember shots.<br>");
+          eviCount++;
+        }
+        else if(optionKeyIndex == 1 && eviCount == 0)
+        {
+          del_from_options(optionKeyIndex);
+          add_to_paragraph("Not that I remember.<br>");
+          eviCount++;
+        }
+        else if(optionKeyIndex == 0 && eviCount == 1)
+        {
+          del_from_options(optionKeyIndex);
+          add_to_paragraph("Not that I remember.<br>");
+          eviCount++;
+        }
+        else if(eviCount == 0 && optionKeyIndex == 2) // blue car
+      {
+        add_to_paragraph("Yeah... going real fast! A sports car.<br>");
+        evidence = false;
+        car = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // ABOUT THE CAR
+        add_to_options("Did you catch a look at the license plate?");
+        add_to_options("Do you remember the model? Foreign, domestic?");
+        add_to_options("Did you see the driver?");
+      }
+      else if(eviCount == 1 && optionKeyIndex == 1) // blue car
+      {
+        add_to_paragraph("Yeah... going real fast! A sports car.<br>");
+        evidence = false;
+        car = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // ABOUT THE CAR
+        add_to_options("Did you catch a look at the license plate?");
+        add_to_options("Do you remember the model? Foreign, domestic?");
+        add_to_options("Did you see the driver?");
+      }
+      else if(eviCount == 2 && optionKeyIndex == 0) // blue car
+      {
+        add_to_paragraph("Yeah... going real fast! A sports car.<br>");
+        evidence = false;
+        car = true;
+        del_from_options(0);
+        del_from_options(0);
+        // ABOUT THE CAR
+        add_to_options("Did you catch a look at the license plate?");
+        add_to_options("Do you remember the model? Foreign, domestic?");
+        add_to_options("Did you see the driver?");
+      }
+      else if(eviCount == 0 && optionKeyIndex == 3) // all we want to know for now
+      {
+        add_to_paragraph("Good, 'cause I got places to be, you know?<br>");
+        green();
+        gameover = true;
+      }
+      else if(eviCount == 1 && optionKeyIndex == 2) // all we want to know for now
+      {
+        add_to_paragraph("Good, 'cause I got places to be, you know?<br>");
+        green();
+        gameover = true;
+      }
+      else if(eviCount == 2 && optionKeyIndex == 1) // all we want to know for now
+      {
+        add_to_paragraph("Good, 'cause I got places to be, you know?<br>");
+        green();
+        gameover = true;
+      }
+      else
+      {
+        // Normally valid, but not for the current mydialog.
+        add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, but no text for this.<br>");
+      }
+        valid = true;
+        show_dialog();
+      }
+
+    }
+    else if(car)
+    {
+      add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, [" + mydialog[optionKeyIndex].text + "]<br>");
+      if(optionKeyIndex == 0)
+      {
+        add_to_paragraph("What, I got a photographic memory? No.<br>");
+        car = false;
+        followup = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // FOLLOW-UP
+        add_to_options("I've got another question about the car.");
+        add_to_options("I need to ask you again about your alibi.");
+        add_to_options("All right, that'll do for now. Don't leave town.");
+      }
+      else if(optionKeyIndex == 1)
+      {
+        add_to_paragraph("Maybe a Porsche. I'm not a car guy.<br>");
+        car = false;
+        followup = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // FOLLOW-UP
+        add_to_options("I've got another question about the car.");
+        add_to_options("I need to ask you again about your alibi.");
+        add_to_options("All right, that'll do for now. Don't leave town.");
+      }
+      else if(optionKeyIndex == 2)
+      {
+        add_to_paragraph("It was a man. That's all I can say.<br>");
+        car = false;
+        followup = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // FOLLOW-UP
+        add_to_options("I've got another question about the car.");
+        add_to_options("I need to ask you again about your alibi.");
+        add_to_options("All right, that'll do for now. Don't leave town.");
+      }
+      else
+      {
+        add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, but no text for this.<br>");
+      }
+    }
+    else if(followup)
+    {
+      add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, [" + mydialog[optionKeyIndex].text + "]<br>");
+      if(optionKeyIndex == 0)
+      {
+        add_to_paragraph("Fire away.<br>");
+        followup = false;
+        car = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // ABOUT THE CAR
+        add_to_options("Did you catch a look at the license plate?");
+        add_to_options("Do you remember the model? Foreign, domestic?");
+        add_to_options("Did you see the driver?");
+      }
+      else if(optionKeyIndex == 1)
+      {
+        add_to_paragraph("It's not going to be any different.<br>");
+        followup = false;
+        evidence = true;
+        del_from_options(0);
+        del_from_options(0);
+        del_from_options(0);
+        // ASK ABOUT EVIDENCE
+        add_to_options("Did you hear any shots around that time?");
+        add_to_options("We're trying to trace a tall man in jogging clothes. Did you see him?");
+        add_to_options("When you came out, did you see a blue car go by?");
+        add_to_options("That's all we want to know for now.");
+        eviCount = 0;
+      }
+      else if(optionKeyIndex == 2)
+      {
+        add_to_paragraph("Thanks for nothing.<br>");
+        green();
+        gameover = true;
+      }
+      else
+      {
+        add_to_paragraph("Option " + optionKeys[optionKeyIndex]
+          + " selected, but no text for this.<br>");
+      }
+    }
+    show_dialog();
+  }
+
+}
+
+
+
+// ************************************************************************
+//      Start of key-press functions
+// ************************************************************************
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event)
+  {
+
+    event = event || window.event;
+    var key = event.which || event.cursor;
+
+    // Check for a special key value, and map it to ASCII.
+    switch (key) {
+      case 37:  // Left arrow, ASCII 29
+        key = 29;
+        break;
+      case 38:  // Up arrow, ASCII 30
+        key = 30;
+        break;
+      case 39:  // Right arrow, ASCII 28
+        key = 28;
+        break;
+      case 40:  // Down arrow, ASCII 31
+        key = 31;
+        break;
+    }
+    whenKeyPressed(key);
+  };
+
+
+  function whenKeyPressed(key)
+  {
+ 
+    switch (key)
+    {
+      case 65:   // 'A'
+        // Option A selected
+        if(!gameover)
+        {
+          console.log("Option A selected");
+          optionKeyIndex = 0;
+        }
+        break;
+      case 66:   // 'B'
+        // Option B selected
+        if(!gameover)
+        {
+          console.log("Option B selected");
+          optionKeyIndex = 1;
+        }
+        break;
+      case 67:   // 'C'
+        // Option C selected
+        if(!gameover)
+        {
+          console.log("Option C selected");
+          optionKeyIndex = 2;
+        }
+        break;
+      case 68:   // 'D'
+        // Option D selected
+        if(!gameover)
+        {
+          console.log("Option D selected");
+          optionKeyIndex = 3;
+        }
+        break;
+      default:
+        if(!gameover)
+        {
+          add_to_paragraph("Unexpected key " + key + "<br>");
+          optionKeyIndex = -1;
+        }
+        break;
+    }
+    // Call the function to process this input in the context of the prompt
+    // (i.e. further the player's conversation)
+    if(!gameover)
+      processResponse();
+  }
+
+//]]>
+</script>
+
+
+</head>
+<body bgcolor="#020202" text="#ffffff">
+<!-- <body bgcolor="#ffffff" text="#00ff00"> -->
+
+
+<center>
+<script type="application/javascript">
+  document.writeln("Dialog tree v2 - by Michael Weeks<br>");
+
+  // Make the main canvas.
+  document.writeln('<canvas id="theCanvas" tabindex="1" width="'
+    + CANVASWIDTH + '" height="'+ CANVASHEIGHT + '">');
+  document.writeln('<\/canvas>');
+  // Defining theContext
+  theCanvas = document.getElementById("theCanvas");
+  theContext = theCanvas.getContext("2d");
+
+
+  document.writeln('<p id="results">Results:<br></p>');
+  //document.writeln('<p id="results">no results yet</p>');
+  //  document.getElementById("results").innerHtml = "";
+
+  // Populate the list of options.
+
+  // ASK ABOUT EVIDENCE
+  add_to_options("Did you hear any shots around that time?");
+  add_to_options("We're trying to trace a tall man in jogging clothes. Did you see him?");
+  add_to_options("When you came out, did you see a blue car go by?");
+  add_to_options("That's all we want to know for now.");
+
+  // Draw the list of options on the canvas.
+  if(!gameover)
+    show_dialog();
+
+  //window.onload = splashScreen();
+</script>
+</center>
+
+
+
+</body>
+</html>

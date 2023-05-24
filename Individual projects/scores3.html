@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<title>Scores3</title>
+<script type="application/javascript">
+  var player1_score = 0;
+  var player2_score = 0;
+  function UpdateScore(player_num, pts) {
+    if (player_num == 1)
+      player1_score += pts; 
+    else
+      player2_score += pts; 
+    document.getElementById("scores").innerHTML =  
+      "Player1: " + player1_score + ", Player2: " + player2_score;
+  }
+</script>
+</head>
+<body>
+    <canvas id="theCanvas" width="100" height="100">
+    </canvas> <br>
+    <p id="scores">Player1: 0, Player2: 0</p> 
+    <button onclick="UpdateScore(1, 10);">player1 +10</button>
+    <button onclick="UpdateScore(2, 10);">player2 +10</button>
+<script type="application/javascript">
+  // Make the canvas a solid color
+  var canvas = document.getElementById("theCanvas");
+  var ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#10CC77";
+  ctx.fillRect(0, 0, 100, 100); 
+</script>
+</body></html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Keyboard Example</title>
+<script type="application/javascript">
+
+var lastkey = "";
+
+  function whenKeyPressed_old(key)
+  {
+    switch (key)
+    {
+      case 37:  // Left arrow
+        lastkey = "Left arrow";
+        break;
+      case 38:  // Up arrow was pressed 
+        lastkey = "Up arrow";
+        break;
+      case 39:  // Right arrow was pressed 
+        lastkey = "Right arrow";
+        break;
+      case 40:  // Down arrow was pressed 
+        lastkey = "Down arrow";
+        break;
+      default:
+        lastkey = key;
+        break;
+    }
+    document.getElementById("addstuff").innerHTML = 
+      "Last key pressed: " + lastkey;
+  }
+
+  function whenKeyPressed(key) {
+    switch (key) {
+      case "ArrowLeft":  // Left arrow
+        lastkey = "Left arrow";
+        break;
+      case "ArrowUp":  // Up arrow was pressed 
+        lastkey = "Up arrow";
+        break;
+      case "ArrowRight":  // Right arrow was pressed 
+        lastkey = "Right arrow";
+        break;
+      case "ArrowDown":  // Down arrow was pressed 
+        lastkey = "Down arrow";
+        break;
+      default:
+        lastkey = key;
+        break;
+    }
+    document.getElementById("addstuff").innerHTML = 
+      "Last key pressed: " + lastkey;
+  }
+
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event)
+  {
+    event = event || window.event;
+
+    // event.which is deprecated
+    //var key = event.which || event.cursor;
+    //whenKeyPressed_old(key);
+
+    var key = event.key;  // This also works, and returns a string
+    whenKeyPressed(key);
+  };
+
+</script>
+</head>
+<body>
+<p id="addstuff">No key pressed yet</p>
+</body>
+</html>

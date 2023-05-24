@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Example 5</title>
+<script type="application/javascript">
+
+  var WIDTH = 640;       // of the canvas
+  var HEIGHT = 480;      // of the canvas
+
+
+  // Erase the canvas
+  function eraseCanvas() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
+
+  // This function is called when the page load is complete.
+  // See the "body" tag below.
+  function loadComplete() {
+    console.log("Load is complete.");
+    canvas = document.getElementById("theCanvas");
+    ctx = canvas.getContext("2d");
+
+    console.log("Draw on the canvas");
+    // draw a line
+    ctx.strokeStyle = "#F0F000";  // Yellow
+    ctx.moveTo(100, 100);
+    ctx.lineTo(200, 200);
+    ctx.stroke();
+  }
+
+
+</script>
+</head>
+<body onload="loadComplete()" bgcolor="#0f0f0f" text="#ffffff">
+
+<center>
+<script type="application/javascript">
+  // We can specify the canvas in HTML.
+  // Doing it here in JS means we can specify HEIGHT and WIDTH.
+  document.write("<canvas id=\"theCanvas\" tabindex=\"1\" width=\"" + WIDTH
+    + "\" height=\"" + HEIGHT + "\"></canvas>");
+</script>
+</body>
+</html>

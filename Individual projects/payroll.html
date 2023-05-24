@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Company Payroll Report</title>
+		<link rel="stylesheet" href ="bootstrap.min">
+			<script>
+			var empCount = 0, totalPay = 0;
+			var employees, hoursWorked, empPay;
+			var wages = [];
+			var payPerWeek = [];
+			for (var emp = 0; emp < 100; emp++) {
+				hoursWorked = parseFloat(prompt("Enter Hours worked for " + (emp + 1) + " Employee", "Employee " + (emp + 1)));
+				if (hoursWorked == -1 && empCount == 0) {
+					alert("Kindly enter at least one employees hours");
+					break;
+				}
+				else {
+					if (hoursWorked != -1) {
+						wages[emp] = hoursWorked;
+						empCount = empCount + 1;
+					if (wages[emp] < 40) {
+						empPay = wages[emp] * 15;
+						payPerWeek[emp] = empPay;
+					}
+					else {
+						empPay = 40 * 15 + (wages[emp] - 40) * (15 + 15 / 2);
+						payPerWeek[emp] = empPay;
+					}
+						totalPay = totalPay + payPerWeek[emp];
+				}
+				else {
+				break;
+				}
+				}
+			}
+
+		</script>
+	</head>
+	<body>
+
+		<div id="myDiv"></div>
+
+		<h1>Total pay of all the employees :
+		<span id="totalPay"></span>
+		</h1>
+		<script>
+			var row, col;
+			var table = document.createElement("Table");
+			table.setAttribute("border", "1px")
+			row = table.insertRow(i);
+			col = row.insertCell(0);
+			col.innerHTML = "Sr.No";
+			col.setAttribute("class", "th");
+			col = row.insertCell(1);
+			col.innerHTML = "Number of hours worked";
+			col.setAttribute("class", "th");
+			col = row.insertCell(2);
+			col.innerHTML = "Employee's pay for the week";
+			col.setAttribute("class", "th");
+			for (var i = 0; i < empCount; i++) {
+				row = table.insertRow(i + 1);
+				col = row.insertCell(0);
+				col.innerHTML = (i + 1);
+				col = row.insertCell(1);
+				col.innerHTML = wages[i];
+				col = row.insertCell(2);
+				col.innerHTML = payPerWeek[i];
+			}
+		var div = document.getElementById("myDiv");
+		div.appendChild(table);
+		document.getElementById("totalPay").innerHTML = totalPay;
+		</script>
+	</body>
+</html>

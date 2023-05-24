@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://gamedev.cs.gsu.edu/~mweeks/draw2.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Moving 2 sprites</title>
+
+<!-- 
+drawImage example
+
+-Michael Weeks, Sept 2021
+-->
+
+<script type="application/javascript">
+// <![CDATA[
+var INTERVAL = 50;
+var DEBUG = false; //true;
+
+var canvas;             // The canvas shown on the page.
+var ctx;                // The context, used to access the canvas.
+
+var SpriteRow = 0;      // Row of the graphic to show
+var SpriteCol = 0;      // Col of the graphic to show
+var MaxSpriteRow = 8;   // How many rows of images
+var MaxSpriteCol = 8;  // How many columns of images
+var tileWidth = 32;    // Size of each tile (32x32)
+var tileHeight = 32;
+var gameover = false;
+var player1Score = 0;
+var player2Score = 0;
+
+
+
+var WIDTH = 640;    // of the canvas
+var HEIGHT = 480;    // of the canvas
+var MAXROW = 15;
+var MAXCOL = 20;
+var moved = false;      // Did a player move?
+var SpriteWidth = 32;   // Width, Height of each sprite
+var SpriteHeight = 32;
+var squareWidth = 32;   // Width, Height of the tiles (squares)
+var squareHeight = 32;
+var myX1 = WIDTH - 100;           // Where player 1 starts 
+var myY1 = Math.floor(HEIGHT/2);  // 
+var myX2 = 100;                   // Where player 2 starts 
+var myY2 = myY1;                  //
+var moveAmount = 8;  // How many pixels to move per update.
+var FONTSIZE = 32;
+var LEFT_GOAL = (FONTSIZE+4);
+var RIGHT_GOAL = WIDTH - (FONTSIZE+4);
+var FOOTBALL = 3;  // Which graphic index has the football
+
+var SpriteImage = new Image();   // Sprite sheet
+SpriteImage.src   = "Pounce2.png";
+
+var Sprite2Image = new Image();   // Sprite sheet
+Sprite2Image.src   = "gasouthern.png";
+
+var footballImage = new Image();   // Sheet of tiles
+footballImage.src   = "football.png";
+
+
+// Set up a timer to execute every 50 ms.
+var myInterval;
+
+// A wall is a feature code of 1 
+// (i.e. 1 place right of left-most feature image)
+// Make this array 15 rows by 20 columns 
+// (each square is 32x32, so 15*32, 20*32 = 480, 640
+// 
+// There are other ways to do this. I like this way because
+// I can see where the features are in relation to each other.
+// Each value corresponds to a subimage of the tiles.
+//   0 is a blank
+//   1 is a filled white square 
+var myarray = [ 
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+
+// 
+// Change the background screen color to green.
+//
+function green() {
+  document.bgColor = "#0f6000";
+}
+
+function blue() {
+  document.bgColor = "#000f60";
+}
+
+function red() {
+  document.bgColor = "#f60000";
+}
+
+function grey() {
+  document.bgColor = "#777777";
+}
+
+
+// Erase the canvas
+function eraseCanvas() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+
+// Erase a single tile from the canvas
+function eraseTile(r, c, tileWidth, tileHeight) {
+  ctx.clearRect(c*tileWidth, r*tileHeight, tileWidth, tileHeight);
+}
+
+
+function eraseSprite(tempX, tempY) {
+  // erase sprite
+  ctx.clearRect(tempX, tempY, SpriteWidth, SpriteHeight);
+}
+
+
+// Draw a single tile on the canvas.
+// tile is a code (e.g. 2) that specifies the tile to draw.
+// r, c specify the row, column of where the tile should go.
+function drawTile(tile, r, c, tileWidth, tileHeight) {
+  ctx.drawImage(footballImage,
+    // What part of the image (0 because there is only one row of tiles)
+    tile*tileWidth, 0, tileWidth, tileHeight,
+    // Where it goes on the canvas
+    c*tileWidth, r*tileHeight, tileWidth, tileHeight);
+}
+
+
+// Look at each tile location, and draw the tile on the canvas.
+function drawTiles() {
+  var index = 0;
+
+  for (var r=0; r<MAXROW; r++) {
+    for (var c=0; c<MAXCOL; c++) {
+      tile = myarray[index]; // [r* MAXCOL + c];
+      drawTile(tile, r, c, tileWidth, tileHeight);
+
+      index++;
+    }
+  }
+}
+
+
+// Make a string of the array of Tiles.
+// This is used for debugging.
+function stringifyTiles() {
+  var index = 0;
+  var str = '';
+  for (var r=0; r<MAXROW; r++) {
+    for (var c=0; c<MAXCOL; c++) {
+      tile = myarray[index]; // [r* MAXCOL + c];
+      str += tile + ' ';
+
+      index++;
+    }
+    str += '\n';
+  }
+  // console.log(str);
+  return str;
+}
+
+
+// This is how the drawImage function works:
+// drawImage( image to draw,
+//            topCornerX in that image, topCornerY in that image, 
+//            offsetToBottomX, offsetToBottomY,
+//            where to put it on the canvasX, where to put it on the canvasY,
+//            offsetToBottomCanvasX, offsetToBottomCanvasY )
+// ctx implies the canvas, so image to draw is the sprite sheet (or just
+//   an image)
+// The offsets are usually the same, but it will shrink/expand the subimage
+//   if they are different.
+//
+// When the whole image should be drawn, you can call it by this form:
+// drawImage( image to draw,
+//            topCornerX in that image, topCornerY in that image) 
+//
+function drawSprite(number, tempX, tempY) {
+  // console.log("Draw the sprite at " + tempX + ", " + tempY);
+  if (number == 1) {
+    ctx.drawImage(SpriteImage, tempX, tempY);
+  } else {
+    ctx.drawImage(Sprite2Image, tempX, tempY);
+  }
+}
+
+
+// Update the scores (redisplay them)
+function updateScore() {
+  // This says to change the "innerHTML" of the element (a paragraph here)
+  // with the ID "player1stat". In other words, over-write the text of 
+  // that paragraph with the new text ("Player 1: " + player1Score).
+  document.getElementById("player1stat").innerHTML = "Player 1: " + player1Score;
+  document.getElementById("player2stat").innerHTML = "Player 2: " + player2Score;
+}
+
+
+// Figure out who won
+function whowon() {
+  updateScore();
+  if (player1Score > player2Score)
+     blue();
+  else if (player2Score > player1Score)
+     red();
+  else 
+     grey(); // Tie game
+}
+
+
+// This does not need a "Tick" function since it is driven by keyboard events.
+//function Tick() {
+//
+//  if (moved) {
+//    moved = false;
+//  }
+//}
+
+
+function drawEndzones() {
+  ctx.fillStyle = "white";
+  //ctx.font = "bold 32px Arial";
+  ctx.font = "bold " + FONTSIZE + "px Arial";
+  // This code is based on an example from
+  // from https://stackoverflow.com/questions/20866249/rotate-text-in-a-canvas-with-javascript
+    // left side
+    var r = -90*Math.PI/180;
+    ctx.save();
+    ctx.rotate(r);
+    ctx.translate(-282, FONTSIZE); 
+    ctx.fillText("Goal",0,0);
+    ctx.restore();
+    // right side
+    r = 90*Math.PI/180;
+    ctx.save();
+    ctx.translate(WIDTH - FONTSIZE,220);
+    ctx.rotate(r);
+    ctx.fillText("Goal",0,0); 
+    ctx.restore();
+  // end from stackoverflow.com
+
+  // Draw lines on either side
+  // Along left side
+  ctx.strokeStyle = "#fff";
+  // to the left of "goal"
+  ctx.moveTo(0, 0);
+  ctx.lineTo(0, HEIGHT-1);
+  ctx.stroke();
+  // to the right of "goal"
+  ctx.moveTo(LEFT_GOAL, 0);
+  ctx.lineTo(LEFT_GOAL, HEIGHT-1);
+  ctx.stroke();
+
+  // Along right side
+  // to the left of "goal"
+  ctx.moveTo(RIGHT_GOAL, 0);
+  ctx.lineTo(RIGHT_GOAL, HEIGHT-1);
+  ctx.stroke();
+  // to the right of "goal"
+  ctx.moveTo(WIDTH, 0);
+  ctx.lineTo(WIDTH, HEIGHT-1);
+  ctx.stroke();
+}
+
+
+function addAfootball() {
+  // populate a random football
+  var tempRow, tempCol;
+  tempRow = 1 + Math.round(Math.random() * (MAXROW-3));
+  tempCol = 1 + Math.round(Math.random() * (MAXCOL-3));
+  // 3 is the code for the football tile.
+  myarray[tempRow * MAXCOL + tempCol] = 3;
+}
+
+
+function loadComplete() {
+  console.log("Load is complete."); 
+  canvas = document.getElementById("theCanvas");
+  ctx = canvas.getContext("2d");
+}
+
+
+// Delete a football. Actually, this replaces any tile at (tempRow, tempCol)
+// with tile 0, which is empty.
+// This *only* changes the number in the array. 
+// Use this to delete the graphic from the canvas:
+//   eraseTile(tempRow, tempCol, tileWidth, tileHeight);
+function deleteFootball(tempRow, tempCol) {
+  myarray[tempRow * MAXCOL + tempCol] = 0;  // Remove it from the array
+}
+
+
+// Do the new coordinates cause a collision?
+function checkCollision(player, newX, newY) {
+  // Use floor since result should be integer
+  var tempRow = Math.floor(newY / tileWidth);
+  var tempCol = Math.floor(newX / tileHeight);
+  // So tempRow, tempCol are integer offsets into array.
+  if (myarray[tempRow * MAXCOL + tempCol] == FOOTBALL) {
+    // Add 1 to the score.
+    if (player == 1)
+      player1Score += 3;
+    else
+      player2Score += 3;
+    updateScore();
+
+    // console.log(stringifyTiles());
+
+    // Delete the football
+    myarray[tempRow * MAXCOL + tempCol] = 0;  // Remove it from the array
+    // console.log("erase tile at " + tempRow + ", " + tempCol);
+    eraseTile(tempRow, tempCol, tileWidth, tileHeight);
+
+    return true;
+  } 
+
+  // Is there a non-0 feature there?
+  if (myarray[tempRow * MAXCOL + tempCol] == 0)
+    return true;
+
+  return false;
+}
+
+
+// What to do when the user presses a key.
+function whenKeyPressed(key) {
+
+  switch (key) {
+    case 28:  // Right arrow was pressed 
+      // Go right, player 1 
+      document.getElementById("player1stat").innerHTML = "Player 1: move right";
+      break;
+    case 29:  // Left arrow
+      // Go down, player 1 
+      document.getElementById("player1stat").innerHTML = "Player 1: move left";
+      break;
+    case 30:  // Up arrow was pressed 
+      // Go up, player 1 
+      document.getElementById("player1stat").innerHTML = "Player 1: move up";
+      break;
+    case 31:  // Down arrow was pressed 
+      // Go down, player 1 
+      document.getElementById("player1stat").innerHTML = "Player 1: move down";
+      break;
+    case 65:  // A key 
+      // Go left, player 2 
+      document.getElementById("player2stat").innerHTML = "Player 2: move left";
+      break;
+    case 68:  // D key 
+      // Go right, player 2 
+      document.getElementById("player2stat").innerHTML = "Player 2: move right";
+      break;
+    case 83:  // S key
+      // Go down, player 2 
+      document.getElementById("player2stat").innerHTML = "Player 2: move down";
+      break;
+    case 87:  // W key 
+      // Go up, player 2 
+      document.getElementById("player2stat").innerHTML = "Player 2: move up";
+      break;
+  }
+}
+
+///]]>
+</script>
+
+</head>
+<body onload="loadComplete()" bgcolor="#0f0f0f" text="#ffffff">
+
+<center>
+<script type="application/javascript">
+  document.write("<canvas id=\"theCanvas\" tabindex=\"1\" width=\"" + WIDTH 
+    + "\" height=\"" + HEIGHT + "\"></canvas>");
+</script>
+<p id="player1stat">Player 1: 0</p>
+<p id="player2stat">Player 2: 0</p>
+<h2>Press up/down/left/right or a/s/d/w to move</h2>
+<h2>+3 points for picking up a football</h2>
+<h2>+6 points for running across goal line (game ends)</h2>
+<button onclick="eraseCanvas();">erase canvas</button>
+<button onclick="green();">green</button>
+<button onclick="blue();">blue</button>
+<button onclick="addAfootball();">add a football</button>
+<button onclick="drawTiles();">draw tiles</button>
+<button onclick="drawEndzones();">draw end zones</button>
+<button onclick="drawSprite(1, myX1, myY1);">draw sprite1</button>
+<button onclick="eraseSprite(myX1, myY1);">erase sprite1</button>
+<button onclick="drawSprite(2, myX2, myY2);">draw sprite2</button>
+<button onclick="eraseSprite(myX2, myY2);">erase sprite2</button>
+<button onclick="player1Score+=3;">player1 +3 pts</button>
+<button onclick="player2Score+=3;">player2 +3 pts</button>
+<button onclick="updateScore();">show scores</button>
+</center>
+
+<script type="application/javascript">
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event) {
+    event = event || window.event;
+    var key = event.which || event.cursor;
+    // Check for a special key value.
+    switch (key) {
+      case 37:  // Left arrow 
+        key = 29;
+        break;
+      case 38:  // Up arrow
+        key = 30;
+        break;
+      case 39:  // Right arrow
+        key = 28;
+        break; 
+      case 40:  // Down arrow
+        key = 31;
+        break;
+    }
+    //document.getElementById("keydown").innerHTML =
+    //  " key Down event, keycode " + key;
+    whenKeyPressed(key);
+  };
+</script>
+
+
+
+</body></html>

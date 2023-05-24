@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Balloons 8</title>
+
+<!--
+Example of using a Sprite class, with inheritance
+
+-Michael Weeks, January 2022
+-->
+
+
+<script type="application/javascript">
+var INTERVAL = 20;
+var DEBUG = false; //true;
+
+var canvas;             // The canvas shown on the page.
+var ctx;                // The context, used to access the canvas.
+var WIDTH = 640;        // of the canvas
+var HEIGHT = 480;       // of the canvas
+
+var defaultPlayerX = 100;  // Where the player's sprite should go on the canvas
+var defaultPlayerY = 300;  // Where the player's sprite should go on the canvas
+// Start the sprite on an even boundary (divisible by 32)
+var SpriteWidth = 32;   // Width, Height of each subimage
+var SpriteHeight = 32;
+
+var tickCount = 4;         // When this counts down to 0, spawn a new balloon
+var MAX_TICK_COUNT = 4;    // How long to wait (max) before spawn
+
+var sprite_loaded = true;      // unused. Set to "false" if using it.
+var tiles_loaded  = true;      // unused. Set to "false" if using it.
+var balloonImageLoaded = false;
+var pageLoadComplete = false;
+
+var balloons   = new Image();
+balloons.src   = "balloons.png";
+balloons.onload = BalloonsLoaded;   // Call this function when onload happens.
+// Used to show a brief animated sequence when a balloon pops.
+// 192 = 32 pixel rows * 6 images
+var balloonMaxRow = 1;   // updated later
+var imageOffset = 32; //balloons.width; // Where the next image call is found.
+var SPEED = 6;    // How fast the balloons can travel
+
+
+  var spriteType = {
+    NONE:             0,
+    USERCONTROLLED:   1,
+    BALLOON:          2,
+  };
+
+
+class Sprite {
+  constructor(name, t) {
+    this.name = name;
+    this.active = false;
+    this.popping = false;
+    this.type = t; //spriteType.NONE;
+    this.X = 0;
+    this.Y = 0;
+    this.DX = 0;
+    this.DY = 0;
+    // height and width are for the actual, visible graphics.
+    this.height = SpriteHeight;  // default
+    this.width = SpriteWidth;    // default
+    // cellHeight cellWidth are for the sprite sheet.
+    // For example, a sprite sheet might have 32x32 cells, but a character only
+    // uses 28x25 of it, so height and width are 28,25 while
+    // cellHeight cellWidth are 32,32
+    this.cellHeight = SpriteHeight;  // default
+    this.cellWidth = SpriteWidth;    // default
+    // cellRow, cellCol say which cell to use on the sprite sheet, 
+    // e.g. 0,1 would be the cellHeight x cellWidth subimage on row 0, column 1
+    this.cellRow = 0;
+    this.cellCol = 0;
+    // How many columns are in this sprite sheet?
+    // TODO: calculate this from the image.
+    this.MaxSpriteCol = 21;
+    // Which image (sprite sheet) to use for this sprite.
+    this.myImage = 0;
+  }
+  SetHeightWidth(h, w) {
+    this.height = h; 
+    this.width = w;
+  }
+  SetCellHeightWidth(h, w) {
+    this.cellHeight = h; 
+    this.cellWidth = w;
+  }
+  SetImage(myim) {
+    // console.log("Set myimage to " + myim.src);
+    this.myImage = myim;
+  }
+  SetType(t) {
+    this.type = t;
+  }
+  SetXY(newX, newY) {
+    this.X = newX;
+    this.Y = newY;
+  }
+  SetDXDY(newDX, newDY) {
+    this.DX = newDX;
+    this.DY = newDY;
+  }
+  SetHeightWidth(h, w) {
+    this.height = h;
+    this.width = w;
+  }
+  UpdateXY(tempX, tempY) {
+    this.X = tempX;
+    this.Y = tempY;
+  }
+  // Make this sprite active at a new random location and direction.
+  Spawn() {
+    // Start at a random x,y
+    var myX = Math.floor(Math.random()*(WIDTH-32));
+    var myY = Math.floor(Math.random()*(HEIGHT-32));
+    this.SetXY(myX, myY);
+    var myDX = SPEED - Math.floor(Math.random()*(SPEED*2));
+    var myDY = SPEED - Math.floor(Math.random()*(SPEED*2));
+    this.SetDXDY(myDX, myDY);
+    // Choose a cell column, which has a different graphic in each
+    this.cellCol = Math.floor(Math.random()*this.MaxSpriteCol);
+    this.cellRow = 0;
+    // Turn it on
+    this.popping = false;
+    this.active = true;
+  }
+  Move() {
+    var newX = this.X + this.DX;
+    var newY = this.Y + this.DY;
+    // Is this balloon popping?
+    if (this.popping) {
+      // Yes, so update graphic row
+      this.cellRow++;
+      if (this.cellRow >= balloonMaxRow)
+        this.active = false;
+    } else if ((newX < this.width) || 
+        (newX > WIDTH - this.width) ||
+        (newY < this.height) || 
+        (newY > HEIGHT - this.height)) {
+      // Deactivate if off-screen
+      this.popping = true;
+      if (DEBUG)
+        console.log("Set sprite " + i + " Inactive; off-screen");
+    } else {
+      // New place is OK
+      this.X = newX;
+      this.Y = newY;
+    }
+  }
+  DrawSprite() {
+    // drawImage( image to draw,
+    //            topCornerX in that image, topCornerY in that image, 
+    //            offsetToBottomX, offsetToBottomY,
+    //            where to put it on the canvasX, and canvasY,
+    //            offsetToBottomCanvasX, offsetToBottomCanvasY )
+    // ctx implies the canvas, so image to draw is the sprite sheet (or just
+    //   an image)
+    // The offsets are usually the same, but it will shrink/expand the subimage
+    //   if they are different.
+    // draw blue square
+    //ctx.drawImage(blueImage, 
+    //console.log(" draw myimage " + this.myImage);
+    ctx.drawImage(this.myImage, 
+       // What part of the image 
+       this.cellCol*this.cellWidth, this.cellRow*this.cellHeight, 
+       this.width, this.height, 
+       // Where it goes on the canvas
+       this.X, this.Y, this.width, this.height); 
+  }
+}
+
+// Begin example of "extends" modified from 
+// https://www.w3schools.com/js/js_class_inheritance.asp
+class Balloon extends Sprite {
+  constructor() {
+    super("balloon", spriteType.BALLOON);
+    this.maxSize = 32;  // If we want exploding balloon to be large
+  }
+}
+// End example of "extends" modified from 
+// https://www.w3schools.com/js/js_class_inheritance.asp
+
+
+// Make the sprites as objects
+let sprites = new Array();
+
+sprites.push(new Sprite("player1", spriteType.USERCONTROLLED));
+sprites[0].X = defaultPlayerX;
+sprites[0].Y = defaultPlayerY;
+// Set up 50 balloons 
+for (var i=0; i<50; i++) {
+  sprites.push(new Balloon());
+}
+
+
+
+//
+// Once the balloons image loads, start things.
+// There is a timer that checks "balloonImageLoaded"
+//
+function BalloonsLoaded() {
+  balloonMaxRow = Math.floor(balloons.height/imageOffset);
+  balloonImageLoaded = true;
+}
+
+
+// Set up a timer to execute every INTERVAL ms.
+var myInterval;
+
+
+// 
+// Change the background screen color to black.
+//
+function black() {
+  document.bgColor = "#000000";
+  Fill = "#000000";
+}
+
+
+// 
+// Change the background screen color to green.
+//
+function green() {
+  document.bgColor = "#0f6000";
+  Fill = "#0f6000";
+}
+
+
+// 
+// Change the background screen color to red.
+//
+function red() {
+  document.bgColor = "#f04040";
+  Fill = "#f04040";
+}
+
+
+function eraseSprite(X, Y) {
+  // erase sprite
+  ctx.clearRect(X, Y, 32, 32);
+}
+
+
+// Erase the entire canvas.
+function eraseEverything() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+
+function drawEverything() {
+  // The drawImage command lets you copy a rectangle from an image 
+  // to the canvas. 
+  // It has the pattern
+  //   ctx.drawImage(a, b, c, d, e, f, g);
+  // which means
+  //   ctx = the context (on the canvas)
+  //   a = the image draw
+  //   b = the X offset into image a
+  //   c = the Y offset into image a
+  //   d = the width of the subimage
+  //   e = the height of the subimage
+  //   f = the X offset into the canvas, where you want the rectangle
+  //   g = the Y offset into the canvas, where you want the rectangle
+  //   h = the width of the rectangle on the canvas
+  //   i = the height of the rectangle on the canvas
+  //
+  // b,c,d,e define the source rectangle
+  // f,g,h,i define the destination rectangle
+  //
+  // Often, h = d and i = e, that is, the image you show on the canvas
+  // is the same size as the image on the sprite/tile sheet.
+  // However, if h<d and i<e, it will appear smaller.
+  //
+
+
+  // Show the player
+  //sprites[0].DrawSprite();
+
+  // Show the active sprites
+  for (var i=1; i<sprites.length; i++) {
+    if (sprites[i].active) {
+       // Draw the sprite according to the type
+       sprites[i].DrawSprite();
+    }
+  }
+}
+
+
+function Tick() {
+
+  eraseEverything();
+  tickCount--;
+
+  // Spawn a balloon every so-many ticks
+  if (tickCount <= 0) {
+    tickCount = Math.floor(Math.random()*(MAX_TICK_COUNT));
+    // Spawn a balloon
+
+    // First, find an unused balloon 
+    var i = 1;  // start at 1 because 0 is player
+    var found = false;
+    // Find a non-active sprite of the correct type
+    while ((i<sprites.length) && (!found)) {
+      if ((!sprites[i].active) && (sprites[i].type == spriteType.BALLOON)) {
+        found = true;
+        if (DEBUG)
+          console.log("Can use sprite " + i + " ");
+        sprites[i].Spawn();
+        if (DEBUG)
+          console.log("Set sprite " + i + " Active; spawn");
+      }
+      i++;
+    }
+  } 
+
+  // Move all active sprites
+  for (var i=1; i<sprites.length; i++) {
+    if (sprites[i].active) {
+      sprites[i].Move();
+    }
+  }
+
+  // Show a new image
+  drawEverything();
+}
+
+
+function loadComplete() {
+  console.log("Load is complete."); 
+  canvas = document.getElementById("theCanvas");
+  ctx = canvas.getContext("2d");
+
+  pageLoadComplete = true;
+  // console.log('check4all timer');
+  myInterval = self.setInterval(function(){check4all_loaded()}, 500);
+}
+
+
+// Loading external resources is asynchronous. 
+// We cannot start until everything is loaded.
+// This function checks to see that everything loaded.
+function check4all_loaded() {
+  var checkStr = 'check4all timer: ';
+  if (balloonImageLoaded)
+    checkStr += '  + balloons';
+  else
+    checkStr += '  - balloons';
+  if (pageLoadComplete)
+    checkStr += '  + pageLoadComplete';
+  else
+    checkStr += '  - pageLoadComplete';
+  console.log(checkStr);
+  if ( sprite_loaded  && balloonImageLoaded && 
+         tiles_loaded && pageLoadComplete ) {
+    // Everything has loaded.
+    // Stop the check-loaded interval
+    clearInterval(myInterval);
+    // Set up sprites with graphics info
+    // Sprite 0 is reserved for the player, but is not used.
+    for (var j=1; j<sprites.length; j++) {
+      if (sprites[j].type == spriteType.BALLOON) {
+        sprites[j].SetImage(balloons);
+        sprites[j].SetCellHeightWidth(32, 32);
+        sprites[j].SetHeightWidth(32, 32);
+      }
+    }
+    black(); // background color
+    eraseEverything();
+    drawEverything();
+    // Start a game interval
+    myInterval = self.setInterval(function(){Tick()}, INTERVAL);
+  }
+}
+
+
+</script>
+
+</head>
+<body onload="loadComplete()" bgcolor="#0f0000" text="#ffffff">
+
+
+<center>
+<script type="application/javascript">
+  document.write('<canvas id="theCanvas" tabindex="1" width="' + WIDTH
+    + '" height="' + HEIGHT + '"></canvas>');
+</script>
+<h2>Balloons</h2>
+</center>
+
+</body></html>

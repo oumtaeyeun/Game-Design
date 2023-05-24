@@ -1,0 +1,99 @@
+dd<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Example 7</title>
+<script type="application/javascript">
+
+  var WIDTH = 640;       // of the canvas
+  var HEIGHT = 480;      // of the canvas
+  var tileWidth = 32;    // Size of each tile (32x32)
+  var tileHeight = 32;
+  var MAXROW = 15;       // Max number of rows (HEIGHT/tileHeight)
+  var MAXCOL = 20;       // Max number of columns (WIDTH/tileWidth)
+
+  var tileImage = new Image();   // Sheet of tiles
+  // Loading an image like this should be quick, but 
+  // in the future we'll need to make sure it loaded before trying to 
+  // draw it.
+  tileImage.src   = "features.png"; //football.png";
+
+  // A wall is a feature code of 1
+  // (i.e. 1 place right of left-most feature image)
+  // Make this array 15 rows by 20 columns
+  // (each square is 32x32, so 15*32, 20*32 = 480, 640
+  //
+  // There are other ways to do this. I like this way because
+  // I can see where the features are in relation to each other.
+  // Each value corresponds to a subimage of the tiles.
+  //   0 is a blank
+  //   1 is a filled white square
+  var myarray = [
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 3, 2, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+
+  // Erase the canvas
+  function eraseCanvas() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
+
+  // Look at each tile location, and draw the tile on the canvas.
+  function drawTiles() {
+    var index = 0;
+
+    // r is the row, c is the column
+    for (var r=0; r<MAXROW; r++) {
+      for (var c=0; c<MAXCOL; c++) {
+        tile = myarray[index]; // alternately, myarray[r* MAXCOL + c];
+
+        ctx.drawImage(tileImage,
+          // What part of the image (0 because there is only one row of tiles)
+          tile*tileWidth, 0, tileWidth, tileHeight,
+          // Where it goes on the canvas
+          c*tileWidth, r*tileHeight, tileWidth, tileHeight);
+  
+        index++;
+      }
+    }
+  }
+
+
+  // This function is called when the page load is complete.
+  // See the "body" tag below.
+  function loadComplete() {
+    console.log("Load is complete.");
+    canvas = document.getElementById("theCanvas");
+    ctx = canvas.getContext("2d");
+    console.log("Draw on the canvas");
+    drawTiles();
+  }
+
+
+</script>
+</head>
+<body onload="loadComplete()" bgcolor="#0f0f0f" text="#ffffff">
+
+<center>
+<script type="application/javascript">
+  // We can specify the canvas in HTML.
+  // Doing it here in JS means we can specify HEIGHT and WIDTH.
+  document.write("<canvas id=\"theCanvas\" tabindex=\"1\" width=\"" + WIDTH
+    + "\" height=\"" + HEIGHT + "\"></canvas>");
+</script>
+</body>
+</html>

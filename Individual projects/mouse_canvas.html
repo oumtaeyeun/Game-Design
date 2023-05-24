@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>mouse and canvas example</title>
+
+
+<!-- 
+
+This is a simple example of using mouse events with a canvas.
+
+-Michael Weeks, January 2015
+
+-->
+
+
+<script>
+
+var theCanvas;
+var theContext;
+var MAXWIDTH = 320;   // pixels, e.g. canvas will be MAXWIDTH x MAXHEIGHT 
+var MAXHEIGHT = 240;  // pixels 
+
+// centerX and centerY are used to draw rectangles on the canvas.
+// Later, we use these values to determine which rectangle the user
+// clicks on.
+var centerX = Math.floor(MAXWIDTH/2);
+var centerY = Math.floor(MAXHEIGHT/2);
+
+var mouseX = 0;       // X and Y mouse coords, 
+var mouseY = 0;       // according to its last move event.
+var Xoffset = 0;      // MouseX,Y values are not correct. This corrects X.
+var Yoffset = 0;      // MouseX,Y values are not correct. This corrects Y.
+
+
+// As the "onload" function, this ensures the page is set up correctly.
+function showEverything() {
+
+  theCanvas = document.getElementById("theCanvas");
+  theContext = theCanvas.getContext("2d");
+
+  setUpListeners();   // Map mouse move and buttons to my functions.
+  calibrate();        // Find correct X,Y offsets for mouse.
+
+  // Show something on the canvas.
+  // Draw a green rectangle
+  theContext.fillStyle = "#0f0";
+  theContext.fillRect(0, 0, centerX, centerY);
+  // Draw a blue rectangle
+  theContext.fillStyle = "#00f";
+  theContext.fillRect(centerX, centerY, MAXWIDTH, MAXHEIGHT);
+  // Draw a white rectangle
+  theContext.fillStyle = "#fff";
+  theContext.fillRect(0, centerY, centerX, MAXHEIGHT);
+  // Draw a red rectangle
+  theContext.fillStyle = "#f00";
+  theContext.fillRect(centerX, 0, MAXWIDTH, centerY);
+
+  document.getElementById("theCanvas").focus();
+}
+
+
+// Calculate the Xoffset and Yoffset.
+// (This seems to change as the window loads.)
+function calibrate() {
+  // get canvas position
+  //var canvas = document.getElementById('theCanvas');
+  var obj = theCanvas;
+  var top = 0;
+  var left = 0;
+  // Go through the page to find where the canvas is.
+  // Later, we find the cursor's position, but it will be
+  // from the top left corner of the page. Thus, we can subtract
+  // this offset later.
+  // (Loop code by html5canvastutorials.com)
+  while (obj && obj.tagName != 'BODY') {
+    top += obj.offsetTop;
+    left += obj.offsetLeft;
+    obj = obj.offsetParent;
+  }
+  Xoffset = -left + window.pageXOffset;
+  Yoffset = -top + window.pageYOffset;
+}
+
+
+// User moved the mouse.
+function mouseMoveEvent(evt) {
+  // Find the relative mouse position.
+  mouseX = evt.clientX + Xoffset;
+  mouseY = evt.clientY + Yoffset;
+
+  document.getElementById("mouse_move_status").innerHTML = "Mouse moved to " 
+    + mouseX + ", " + mouseY;
+}
+
+
+// User let up on the mouse button
+function mouseUpEvent() {
+  document.getElementById("mouse_up_status").innerHTML = "Mouse up at " 
+    + mouseX + ", " + mouseY;
+}
+
+
+// User pressed the mouse button down.
+function mouseDownEvent() {
+  var color = "outside the canvas";  // default
+
+  // Assign color according to the rectangle.
+  if ((mouseX >= 0) && (mouseX < centerX) && 
+      (mouseY >= 0) && (mouseY < centerY)) {
+    color = "green"; 
+  } else if ((mouseX >= 0) && (mouseX < centerX) && 
+             (mouseY >= centerY) && (mouseY < MAXHEIGHT)) {
+    color = "white";
+  } else if ((mouseX >= centerX) && (mouseX < MAXWIDTH) && 
+             (mouseY >= 0) && (mouseY < centerY)) {
+    color = "red";
+  } else if ((mouseX >= centerX) && (mouseX < MAXWIDTH) && 
+             (mouseY >= centerY) && (mouseY < MAXHEIGHT)) {
+    color = "blue";
+  }
+
+  // Indicate what rectangle the user clicked on.
+  document.getElementById("mouse_down_status").innerHTML =  
+    "Mouse down at " + mouseX + ", " + mouseY + ", " + color;
+}
+
+
+// Set up event listeners for the mouse. 
+// Based on code from:
+// http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+function setUpListeners() {
+  // If a mousemove event happens, call the mouseMoveEvent function 
+  // defined above. 
+  document.addEventListener('mousemove', mouseMoveEvent, false);
+  document.addEventListener('mousedown', mouseDownEvent, false);
+  document.addEventListener('mouseup', mouseUpEvent, false);
+}
+
+</script>
+
+</head>
+<body onload="showEverything()" bgcolor="#0f0000" text="#ffffff">
+
+<center>
+<script>
+
+  // We don't really need javascript for this, but it does allow us
+  // to set up MAXWIDTH and MAXHEIGHT as variables, then use them
+  // as we define the canvas below. 
+  document.write('<h2>Mouse over canvas example</h2>');
+  document.write('<p id="mouse_move_status">No mouse movement yet.</p>');
+  document.write('<p id="mouse_down_status">No mouse down event yet.</p>');
+  document.write('<p id="mouse_up_status">No mouse up event yet.</p>');
+  document.write('<p id="status"></p>');
+
+  // Set up the canvas.
+  document.write('<canvas id="theCanvas" tabindex="1" width="' 
+    + MAXWIDTH + '" height="'+ MAXHEIGHT + '"></canvas>');
+
+</script>
+
+</center>
+
+</body></html>

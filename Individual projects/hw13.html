@@ -1,0 +1,197 @@
+CTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>HW13</title>
+
+
+<script type="application/javascript">
+// <![CDATA[
+
+var canvas;
+var ctx;
+var CANVASWIDTH = 640;
+var CANVASHEIGHT = 480;
+var DEBUG = false;
+var SpriteRow = 0;
+var SpriteCol = 0;
+var MaxSpriteRow = 8;
+var MaxSpriteCol = 8;
+var SpriteWidth = 32;
+var SpriteHeight = 32;
+var trees = new Image();
+trees.src = "features_trees.png";
+var myInterval;
+var INTERVAL = 100;
+
+var arr = [];
+
+function checkSides(x,y)
+{
+  var count = 0;
+  if(x-1 > -1)
+  {
+    if(arr[x-1][y] != 0)
+    {
+      count++;
+    }
+    if(y-1 > -1)
+    {
+      if(arr[x-1][y-1] != 0)
+      {
+        count++;
+      }
+    }
+    if(y+1 < (CANVASHEIGHT/SpriteHeight))
+    {
+      if(arr[x-1][y+1] != 0)
+      {
+        count++;
+      }
+    }
+  }
+
+    if(x+1 < (CANVASWIDTH/SpriteWidth))
+    {
+      if(arr[x+1][y] != 0)
+      {
+        count++;
+      }
+      if(y+1< (CANVASHEIGHT/SpriteHeight))
+      {
+        if(arr[x+1][y+1] != 0)
+        {
+          count++;
+        }
+      }
+      if(y-1 > -1)
+      {
+        if(arr[x+1][y-1] != 0)
+        {
+          count++;
+        }
+      }
+    }
+    if(y-1 > -1)
+    {
+      if(arr[x][y-1] != 0)
+      {
+        count++;
+      }
+    }
+    if(y+1 < (CANVASHEIGHT/SpriteHeight))
+    {
+      if(arr[x][y+1] != 0)
+      {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+function Tick()
+{
+  update();
+  console.log(arr.toString());
+}
+
+function clearScreen()
+{
+  ctx.clearRect(0, 0, CANVASWIDTH, CANVASHEIGHT);
+}
+
+function update()
+{
+  clearScreen();
+  var newArray = [];
+  for(var i = 0; i < arr.length;i++)
+  {
+    for(var j = 0; j< arr[i].length;j++)
+    {
+      ctx.drawImage(trees, arr[i][j] * SpriteWidth, 0, SpriteWidth, SpriteHeight,
+                    i * SpriteWidth, j * SpriteHeight, SpriteWidth, SpriteHeight);
+      var countSides = checkSides(i,j);
+      if(countSides > 5)
+      {
+        if(arr[i][j] != 0)
+        {
+          arr[i][j]++;
+        }
+      }
+      else if(countSides > 2)
+      {
+        if(arr[i][j] == 0)
+        {
+          arr[i][j]++;
+        }
+      }
+      else if(countSides > 1)
+      {
+        if(arr[i][j] != 0)
+        {
+          arr[i][j]++;
+        }
+      }
+
+      if(arr[i][j] > 8)
+      {
+        arr[i][j] = 0;
+      }
+    }
+  }
+
+}
+
+function populateArray()
+{
+
+  var x = CANVASWIDTH / SpriteWidth;
+  var y = CANVASHEIGHT / SpriteHeight;
+
+  for(var i = 0; i < x;i++)
+  {
+    const a = [];
+    for(var j = 0; j < y;j++)
+    {
+        a[j] = Math.floor(Math.random() * 9);
+    }
+    console.log(a.length);
+    arr.push(a);
+  }
+}
+
+function loadComplete()
+{
+  console.log("Load is complete.");
+  canvas = document.getElementById("theCanvas");
+  ctx = canvas.getContext("2d");
+  populateArray();
+
+  myInterval = self.setInterval(function(){Tick()}, INTERVAL);
+}
+
+///]]>
+</script>
+
+</head>
+<body onload="loadComplete()" bgcolor="#0f0000" text="#ffffff">
+
+
+<center>
+<script type="application/javascript">
+  var CANVASWIDTH = 640;    // of the canvas
+  var CANVASHEIGHT = 480;
+  document.write('<center>');
+  document.write('<canvas id="theCanvas" tabindex="1" width="' + CANVASWIDTH
+    + '" height="' + CANVASHEIGHT + '"></canvas>');
+  //document.write('<h2>Space-bar </h2>');
+  // Make youwin text 10% of view window
+  document.write('<h2 style="font-size:10vw" id="youwin"></h2>');
+  document.write('</center>');
+</script>
+<h2 id="fallen">HW13</h2>
+</center>
+<script type="application/javascript">
+</script>
+</body></html>
+

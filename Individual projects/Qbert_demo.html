@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Cube Visiting Game</title>
+<script type="application/javascript">
+
+  // This is example code written by Michael Weeks, 2022.
+  // This is meant to be modified to complete a homework assignment.
+  // Leave the comments above, and add your name after "modified by"
+  // in a comment here.
+
+
+  // *************************************************************
+  //    You probably don't need to change anything below
+  // *************************************************************
+
+  var WIDTH = 640;       // of the canvas
+  var HEIGHT = 480;      // of the canvas
+
+  var pts = new Array();  // Array of points to draw a single cube
+  var board = new Array();
+
+  // temporary array of valid cubes
+  // This should help you visualize the cubes!
+  // Notice that there is a space between them horizontally.
+  // This means that, if the player could go right, it would
+  // advance the avatar 2 positions.
+  var valid_temp = [  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0,
+                      0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0,
+                      0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
+                      0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+                      1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1];
+
+
+  var MAXCOL = 13;         // dimension of the game board
+  var MAXROW = 7;         // dimension of the game board
+  // playerRow and Col are where the avatar is on the board
+  var playerRow = 2;
+  var playerCol = 6;
+  // playerX and Y are where the avatar is on the canvas 
+  var playerX = playerCol*30 + 15; // center it on the top side 
+  var playerY = playerRow*48 + 24;  
+
+  // Erase the canvas
+  function eraseCanvas() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
+
+  // This function is called when the page load is complete.
+  // See the "body" tag below.
+  function loadComplete() {
+    console.log("Load is complete.");
+    canvas = document.getElementById("theCanvas");
+    ctx = canvas.getContext("2d");
+
+    // Set up the points that define a cube.
+    // This will be drawn many times, with different offsets.
+    // Top
+    pts.push({X:0,  Y:16});
+    pts.push({X:28, Y:0});   
+    pts.push({X:56, Y:16});   
+    pts.push({X:28, Y:32});
+    
+    // front left face
+    pts.push({X:0, Y:16});
+    pts.push({X:28, Y:32});
+    pts.push({X:28, Y:64});
+    pts.push({X:0, Y:49});
+    
+    //front right face
+    pts.push({X:28, Y:32});
+    pts.push({X:56, Y:16});
+    pts.push({X:56, Y:49});
+    pts.push({X:28, Y:64});
+
+    // Set up the board
+    var r, c;
+    for (r=0; r<MAXROW; r++) {
+      for (c=0; c<MAXCOL; c++) {
+        // Make the cubes "valid" if they are part of the triangle pattern
+        if (valid_temp[r*MAXCOL + c] == 0) {
+          board.push({row:r, col:c, visited:false, valid:false});
+        } else {
+          board.push({row:r, col:c, visited:false, valid:true});
+        } 
+      }
+    }
+    // Mark the avatar's current location as visited.
+    board[playerRow*MAXCOL + playerCol].visited = true;
+
+    // Draw the initial board
+    draw_the_board();
+    // Draw the avatar
+    draw_the_avatar();
+  }
+ 
+
+  // Draw a cube at Xoffset, Yoffset from the top-left corner of the canvas.
+  // top_color specifies the color of the top: yellow indicates visited,
+  //   use another color for un-visited. 
+  function draw_a_cube(Xoffset, Yoffset, top_color) {  
+    //console.log("Draw a cube on the canvas");
+    // draw a cube
+    // Top face
+    ctx.strokeStyle = "#DDDD99";   // outline color
+    ctx.beginPath();
+    ctx.moveTo(Xoffset + pts[0].X, Yoffset + pts[0].Y);
+    ctx.lineTo(Xoffset + pts[1].X, Yoffset + pts[1].Y);
+    ctx.lineTo(Xoffset + pts[2].X, Yoffset + pts[2].Y);
+    ctx.lineTo(Xoffset + pts[3].X, Yoffset + pts[3].Y);
+    ctx.closePath();
+    //ctx.fillStyle = "#FFFFFF";  // Fill color (white)
+    //ctx.fillStyle = "#20D0D0";  // Fill color (cyan)
+    // ctx.fillStyle = "#D0D020";  // Fill color (yellow)
+    ctx.fillStyle = top_color;    // Fill color
+    ctx.fill();
+    ctx.stroke();
+    // Left side's face
+    ctx.strokeStyle = "#DDDD99";   // outline color
+    ctx.beginPath();
+    ctx.moveTo(Xoffset + pts[4].X, Yoffset + pts[4].Y);
+    ctx.lineTo(Xoffset + pts[5].X, Yoffset + pts[5].Y);
+    ctx.lineTo(Xoffset + pts[6].X, Yoffset + pts[6].Y);
+    ctx.lineTo(Xoffset + pts[7].X, Yoffset + pts[7].Y);
+    ctx.closePath();
+    ctx.fillStyle = "#443015";  // Fill color (brown)
+    ctx.fill();
+    ctx.stroke();
+
+    // Right side's face
+    ctx.strokeStyle = "#DDDD99";   // outline color
+    ctx.beginPath();
+    ctx.moveTo(Xoffset + pts[8].X, Yoffset + pts[8].Y);
+    ctx.lineTo(Xoffset + pts[9].X, Yoffset + pts[9].Y);
+    ctx.lineTo(Xoffset + pts[10].X, Yoffset + pts[10].Y);
+    ctx.lineTo(Xoffset + pts[11].X, Yoffset + pts[11].Y);
+    ctx.closePath();
+    ctx.fillStyle = "#154430";  // Fill color (dark green)
+    ctx.fill();
+    ctx.stroke();
+  }
+
+
+  // Erase the entire canvas.
+  function eraseEverything() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
+
+  function draw_the_board() {
+    var myrow, mycol;
+
+    for (var r=0; r<MAXROW; r++) {
+      for (var c=0; c<MAXCOL; c++) {
+        // Only draw a cube here if it is "valid"
+        if (board[r*MAXCOL + c].valid) {
+          mycol = board[r*MAXCOL + c].col;
+          myrow = board[r*MAXCOL + c].row;
+          if (board[r*MAXCOL + c].visited) {
+            draw_a_cube(mycol*30, myrow*48, "#D0D020");     // yellow
+          } else {
+            draw_a_cube(mycol*30, myrow*48, "#2020F0");   // dark blue
+          }
+        }
+      }
+    }
+  }
+  // *************************************************************
+  //    You probably don't need to change anything above 
+  // *************************************************************
+
+
+
+  // Draw a capital Q at the avatar's coords.
+  // It would be nice to replace the Q with a graphic.
+  function draw_the_avatar() {
+    ctx.fillStyle = "white";
+    ctx.font = "bold 32px Arial";
+    ctx.fillText("Q", playerX, playerY);  
+  }
+
+
+  // What to do when a key is pressed.
+  function whenKeyPressed(key) {
+    switch (key) {
+      case "w":  //  upper-left
+        console.log("replace this console message with your code!");
+        break;
+      case "e":  // upper-right
+        console.log("replace this console message with your code!");
+        break;
+      case "s":  // lower-left 
+        console.log("replace this console message with your code!");
+        break;
+      case "d":  // lower-right 
+        console.log("replace this console message with your code!");
+        break;
+      default:
+        break;
+    }
+    // Redraw the board
+    eraseEverything();
+    draw_the_board();
+    draw_the_avatar(); 
+  }
+
+
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event) {
+    event = event || window.event;
+
+    // event.which is deprecated
+    //var key = event.which || event.cursor;
+    //whenKeyPressed_old(key);
+
+    var key = event.key;  // This also works, and returns a string
+    whenKeyPressed(key);
+  };
+
+</script>
+</head>
+<body onload="loadComplete()" bgcolor="#0f0f0f" text="#ffffff">
+
+<center>
+<script type="application/javascript">
+  // We can specify the canvas in HTML.
+  // Doing it here in JS means we can specify HEIGHT and WIDTH.
+  document.write("<canvas id=\"theCanvas\" tabindex=\"1\" width=\"" + WIDTH
+    + "\" height=\"" + HEIGHT + "\"></canvas>");
+</script>
+</body>
+</html>

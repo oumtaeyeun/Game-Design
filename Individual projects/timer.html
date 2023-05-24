@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Timer Example</title>
+<script type="application/javascript">
+// Set up a timer to execute every 50 ms.
+var INTERVAL = 50;
+var myInterval;
+
+var count = 20;  // How long to wait 
+var scount = 0;  // count of number of seconds since start
+
+  // This function executes once every 50 ms
+  function Tick() {
+    count--;
+    if (count <= 0) {
+      count = 20;
+      scount++;
+      document.getElementById("addstuff").innerHTML = 
+        "Seconds since start: " + scount;
+    }
+  }
+
+  myInterval = self.setInterval(function(){Tick()}, INTERVAL);
+
+</script>
+</head>
+<body>
+<p id="addstuff"></p>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Simple Animation</title>
+
+<!-- 
+Simple animation program.
+
+-Michael Weeks, October 2019
+-->
+
+<script type="application/javascript">
+// <![CDATA[d
+var INTERVAL = 50;
+var SHOOTINTERVAL = 2000;
+var DEBUG = false; //true;
+
+var canvas;             // The canvas shown on the page.
+var ctx;                // The context, used to access the canvas.
+var score = 0;		// Player1's score
+var score2 = 0;		// Player2's score
+ 
+var SpriteRow = 0;      // Row of the graphic to show
+var SpriteCol = 0;      // Col of the graphic to show
+var MaxSpriteRow = 8;   // How many rows of images
+var MaxSpriteCol = 8;  // How many columns of images
+
+var SpriteX = 100;      // Position of sprite on the canvas
+var SpriteY = 100;
+var SpriteWidth = 32;   // Width, Height of each subimage
+var SpriteHeight = 32;
+
+var SpriteImage = new Image();   // Sprite sheet
+SpriteImage.src   = "Pounce.png";
+
+var CharRow = 0;
+var CharCol = 0;
+var MaxCharRow = 1;
+var MaxCharCol = 1;
+
+var CharX = 540;
+var CharY = 380;
+var CharWidth = 32;
+var CharHeight = 32;
+
+var CharImage = new Image();
+CharImage.src = "gsuG.png";
+
+var ItemRow = 0;
+var ItemCol = 0;
+var MaxItemRow = 5;
+var MaxItemCol = 20;
+
+var ItemX = 320;
+var ItemY = 240;
+var ItemWidth = 32;
+var ItemHeight = 32;
+var ItemImage = new Image();
+ItemImage.src = "balloons.png";
+
+
+
+// Set up a timer to execute every 50 ms.
+var myInterval;
+var shootInterval;
+
+
+function eraseSprite() 
+{
+  // erase sprite
+  ctx.clearRect(SpriteX, SpriteY, SpriteWidth, SpriteHeight);
+}
+
+function eraseChar() 
+{
+  ctx.clearRect(CharX, CharY, CharWidth, CharHeight);
+}
+
+function eraseCanvas()
+{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+
+function drawSprite() 
+{
+  // draw sprite
+  //ctx.drawImage(SpriteImage, SpriteX, SpriteY);
+  ctx.drawImage(SpriteImage, SpriteCol * SpriteWidth, SpriteRow * SpriteHeight, 
+    SpriteWidth, SpriteHeight, SpriteX, SpriteY, SpriteWidth, SpriteHeight); 
+
+
+  // update the next image to show
+  //SpriteCol++;
+  if (SpriteCol >= MaxSpriteCol)
+    SpriteCol = 0;
+}
+
+function drawChar() {
+  ctx.drawImage(CharImage, CharCol * CharWidth, CharRow * CharHeight,
+    CharWidth, CharHeight, CharX, CharY, CharWidth, CharHeight);
+
+  if (CharCol >= MaxCharCol)
+    CharCol = 0;
+}
+
+function drawItem()
+{
+  ctx.drawImage(ItemImage, ItemCol * ItemWidth, ItemRow * ItemHeight,
+    ItemWidth, ItemHeight, ItemX, ItemY, ItemWidth, ItemHeight);
+}
+
+function ColHandler()
+{
+  if(SpriteX < ItemX + ItemWidth &&
+     SpriteX + SpriteWidth > ItemX &&
+     SpriteY < ItemY + ItemHeight &&
+     SpriteHeight + SpriteY > ItemY)
+  {
+    score = score + 10;
+    ItemX = Math.floor(Math.random() * canvas.width);
+    ItemY = Math.floor(Math.random() * canvas.height);
+  }
+  else if(CharX < ItemX + ItemWidth &&
+     CharX + CharWidth > ItemX &&
+     CharY < ItemY + ItemHeight &&
+     CharHeight + CharY > ItemY)
+  {
+    score2 = score2 + 10;
+    ItemX = Math.floor(Math.random() * canvas.width);
+    ItemY = Math.floor(Math.random() * canvas.height);
+  }
+}
+
+function ShootClose()
+{
+  var SpriteDistance = Math.pow((SpriteX + SpriteWidth/2) - (ItemX + ItemWidth/2), 2) + Math.pow((SpriteY + SpriteHeight/2) - (ItemY + ItemHeight/2), 2);
+  var CharDistance = Math.pow((CharX + CharWidth/2) - (ItemX + ItemWidth/2), 2) + Math.pow((CharY + CharHeight/2) - (ItemY + ItemHeight/2), 2);
+  if(Math.sqrt(SpriteDistance) < Math.sqrt(CharDistance))
+  {
+    ctx.strokeStyle = "#F0F000";  // Yellow
+    ctx.moveTo(SpriteX + SpriteWidth/2, SpriteY + SpriteHeight/2);
+    ctx.lineTo(ItemX + ItemWidth/2, ItemY + ItemHeight/2);
+    ctx.stroke();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    score = score + 10;
+    ItemX = Math.floor(Math.random() * canvas.width);
+    ItemY = Math.floor(Math.random() * canvas.height);
+  }
+  else            // favors Player2
+  {
+    ctx.strokeStyle = "#F0F000";  // Yellow
+    ctx.moveTo(CharX + CharWidth/2, CharY + CharHeight/2);
+    ctx.lineTo(ItemX + ItemWidth/2, ItemY + ItemHeight/2);
+    ctx.stroke();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    score2 = score2 + 10;
+    ItemX = Math.floor(Math.random() * canvas.width);
+    ItemY = Math.floor(Math.random() * canvas.height);
+  }
+}
+
+function drawScore()
+{
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Player1 Score: " + score, 8, 20);
+  ctx.fillText("Player2 Score: " + score2, 450, 20);
+}
+
+function Tick() 
+{
+
+  // Erase the sprite from its current location.
+  eraseSprite();
+  eraseChar();
+  eraseCanvas();
+  // Show a new image
+  drawSprite();
+  drawChar();
+  drawItem();
+  ColHandler();  // Player 1 has the adventage over Player 2
+  drawScore();
+}
+
+
+function loadComplete() 
+{
+  console.log("Load is complete."); 
+  canvas = document.getElementById("theCanvas");
+  ctx = canvas.getContext("2d");
+  myInterval = self.setInterval(function(){Tick()}, INTERVAL);
+  shootInterval = self.setInterval(function(){ShootClose()}, SHOOTINTERVAL);
+  drawItem();
+}
+
+// What to do when the user presses a key.
+function whenKeyPressed(key) 
+{
+  switch (key) {
+    case 28:  // Right arrow was pressed
+      SpriteX = SpriteX + 1; 
+      if(SpriteX >= canvas.width)
+         SpriteX = 1;
+      break;
+    case 29:  // Left arrow, ASCII 29
+      SpriteX = SpriteX - 1;
+      if(SpriteX < 0)
+         SpriteX = canvas.width - 1; 
+      break;
+    case 30:  // Up arrow was pressed 
+      // Go up a row
+      //SpriteRow = SpriteRow - 1;
+      SpriteY = SpriteY - 1;
+      if(SpriteY < 0)
+         SpriteY = canvas.height - 1;
+      //if (SpriteRow < 0)
+      //  SpriteRow = MaxSpriteRow - 1;  
+      SpriteCol = 0; // reset column to first image
+      break;
+    case 31:  // Down arrow was pressed 
+      // Go down a row
+      //SpriteRow = SpriteRow + 1;
+      SpriteY = SpriteY + 1;
+      if(SpriteY >= canvas.height)
+         SpriteY = 0;
+      //if (SpriteRow >= MaxSpriteRow)
+      //  SpriteRow = 0;
+      SpriteCol = 0; // reset column to first image
+      break;
+    case 32:  // w was pressed
+      if(CharY - 1 > 0)
+        CharY = CharY - 1;
+      break;
+    case 33:  // a was pressed
+      if(CharX - 1 > 0)
+        CharX = CharX - 1;
+      break;
+    case 34:  // s was pressed
+      if(CharY + 1 < canvas.height)
+        CharY = CharY + 1;
+      break;
+    case 35:  // d was pressed
+      if(CharX + 1 < canvas.width)
+        CharX = CharX + 1;
+      break;
+  }
+}
+///]]>
+</script>
+
+</head>
+<body onload="loadComplete()" bgcolor="#0f0000" text="#ffffff">
+
+<center>
+  <canvas id="theCanvas" tabindex="1" width="640" height="480"></canvas>
+<h2>Press up/down to see different rows</h2>
+</center>
+
+<script type="application/javascript">
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event) {
+    event = event || window.event;
+    var key = event.which || event.cursor;
+    // Check for a special key value, and map it to ASCII.
+    switch (key) {
+      case 37:  // Left arrow, ASCII 29 
+        key = 29;
+        break;
+      case 38:  // Up arrow, ASCII 30
+        key = 30;
+        break;
+      case 39:  // Right arrow, ASCII 28  
+        key = 28;
+        break; 
+      case 40:  // Down arrow, ASCII 31
+        key = 31;
+        break;
+      case 119: // w
+        key = 32;
+        break;
+      case 97:  // a
+        key = 33;  
+	break;
+      case 115: // s
+	key = 34;  
+	break;
+      case 100: // d
+	key = 35;
+	break;
+      case 87: // W
+	key = 32; 
+	break;
+      case 65: // A
+	key = 33;
+	break;
+      case 83: // S
+	key = 34;
+	break;
+      case 68: // D
+	key = 35;
+	break;
+    }
+    //document.getElementById("keydown").innerHTML =
+    //  " key Down event, keycode " + key;
+    whenKeyPressed(key);
+  };
+</script>
+
+
+</body></html>

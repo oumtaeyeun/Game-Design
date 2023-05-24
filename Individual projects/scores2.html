@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<title>Scores2</title>
+<script type="application/javascript">
+  var player_score = 0;
+  function UpdateScore(pts) {
+    player_score += pts; 
+    document.getElementById("scores").innerHTML =  
+      "Score: " + player_score;
+  }
+</script>
+</head>
+<body>
+    <canvas id="theCanvas" width="100" height="100">
+    </canvas> <br>
+    <p id="scores">Score: 0</p> 
+    <button onclick="UpdateScore(10);">+10 points</button>
+<script type="application/javascript">
+  // Make the canvas a solid color
+  var canvas = document.getElementById("theCanvas");
+  var ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#10CC77";
+  ctx.fillRect(0, 0, 100, 100); 
+</script>
+</body></html>

@@ -1,0 +1,17 @@
+Script started on Wed 12 Oct 2022 08:07:56 PM EDT
+]0;toum3@gamedev:~[?1034h[toum3@gamedev ~]$ ls
+hmwk5.txt  hw5.txt  hw6.txt  hwmk4.txt  [0m[01;34mpublic_html[0m  test.txt
+]0;toum3@gamedev:~[toum3@gamedev ~]$ cs[Kd public)ht[K[K[K_html
+]0;toum3@gamedev:~/public_html[toum3@gamedev public_html]$ ls 0l[K[K-l
+total 112
+-rw-r--r--. 1 toum3 toum3 82737 Sep 25 21:25 [0m[01;35mballoons.png[0m
+-rw-rw-r--. 1 toum3 toum3  1584 Sep 18 20:27 [01;35mgsuG.png[0m
+-rw-rw-r--. 1 toum3 toum3   519 Sep 11 21:47 hmwk3.txt
+-rw-rw-r--. 1 toum3 toum3   640 Sep 18 21:17 hmwk4.txt
+-rwxr-xr-x. 1 toum3 toum3   346 Sep 11 21:27 [01;32mindex.html[0m
+-rw-r--r--. 1 toum3 toum3  1712 Sep 11 21:11 [01;35mPounce.png[0m
+-rw-r--r--. 1 toum3 toum3  7783 Oct 12 20:07 simple_animation.html
+]0;toum3@gamedev:~/public_html[toum3@gamedev public_html]$ exit
+exit
+
+Script done on Wed 12 Oct 2022 08:08:12 PM EDT
