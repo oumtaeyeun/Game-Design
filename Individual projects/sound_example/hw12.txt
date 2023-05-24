@@ -1,0 +1,19 @@
+Script started on Sun 13 Nov 2022 10:09:46 PM EST
+]0;toum3@gamedev:~[?1034h[toum3@gamedev ~]$ cd public_html
+]0;toum3@gamedev:~/public_html[toum3@gamedev public_html]$ ls -l
+total 148
+-rw-r--r--. 1 toum3 toum3 82737 Sep 25 21:25 [0m[01;35mballoons.png[0m
+-rw-rw-r--. 1 toum3 toum3 17501 Nov  6 20:23 boulder_dodge.html
+-rw-rw-r--. 1 toum3 toum3 12490 Nov 13 22:08 dialog_tree_v2.html
+-rw-rw-r--. 1 toum3 toum3  1584 Sep 18 20:27 [01;35mgsuG.png[0m
+-rw-rw-r--. 1 toum3 toum3   519 Sep 11 21:47 hmwk3.txt
+-rw-rw-r--. 1 toum3 toum3   640 Sep 18 21:17 hmwk4.txt
+-rwxr-xr-x. 1 toum3 toum3   713 Nov 13 22:09 [01;32mindex.html[0m
+drwxrwxr-x. 2 toum3 toum3   131 Oct 30 22:02 [01;34mparallax[0m
+-rw-r--r--. 1 toum3 toum3  1712 Sep 11 21:11 [01;35mPounce.png[0m
+-rw-r--r--. 1 toum3 toum3  7783 Oct 12 20:07 simple_animation.html
+drwxrwxr-x. 2 toum3 toum3   251 Oct 16 21:35 [01;34msound_example[0m
+]0;toum3@gamedev:~/public_html[toum3@gamedev public_html]$ exit
+exit
+
+Script done on Sun 13 Nov 2022 10:09:59 PM EST

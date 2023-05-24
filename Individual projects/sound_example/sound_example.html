@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Sound Example</title>
+
+<!-- 
+
+-Michael Weeks, March 2021
+
+-->
+
+<script type="application/javascript">
+// <![CDATA[
+
+var DEBUG = false; //true;
+
+var theCanvas;
+var theContext;
+var MAXWIDTH = 640;   // pixels across
+var MAXHEIGHT = 480;  // pixels from top to bottom
+var dbstr = ' ';   // for debugging
+
+var thissound1; 
+var thissound2; 
+var thissound3; 
+var thissound4; 
+var whichSound = 1;  // Which sound played.
+
+
+// See http://www.phon.ucl.ac.uk/home/mark/audio/play10.htm 
+// for another example.
+
+
+// centerX and centerY are used to draw rectangles on the canvas.
+// Later, we use these values to determine which rectangle the user
+// clicks on.
+var centerX = Math.floor(MAXWIDTH/2);
+var centerY = Math.floor(MAXHEIGHT/2);
+
+
+var mouseX = 0;          // X and Y mouse coords, 
+var mouseY = 0;          // according to its last move event.
+var Xoffset = 0;         // MouseX,Y values are not correct. This corrects X.
+var Yoffset = 0;         // MouseX,Y values are not correct. This corrects Y.
+var lastX = 0;           // X where mouse down event was
+var lastY = 0;           // Y where mouse down event was
+var buttonPressed = false;   // Is user pressing the mouse button right now?
+var answer = Array(4);
+var aIndex = 0;
+var victory = true;
+
+// Erase the entire canvas.
+function erase_canvas() {
+  theContext.clearRect(0, 0, MAXWIDTH, MAXHEIGHT);
+}
+
+
+
+
+
+// As the "onload" function, this ensures the maze is shown.
+function showEverything() {
+
+  theCanvas = document.getElementById("theCanvas");
+  theContext = theCanvas.getContext("2d");
+
+  thissound1 = document.getElementById('audio1');
+  thissound2 = document.getElementById('audio2');
+  thissound3 = document.getElementById('audio3');
+  thissound4 = document.getElementById('audio4');
+  thissound5 = document.getElementById('audio5');
+  thissound6 = document.getElementById('audio6');
+
+  setUpListeners();   // Map mouse move and buttons to my functions.
+  calibrate();        // Find correct X,Y offsets for mouse.
+  document.getElementById("theCanvas").focus();
+  // Show something on the canvas.
+  // Draw a green rectangle
+  theContext.fillStyle = "#00ff00";
+  theContext.fillRect(0, 0, centerX, centerY);
+  // Draw a blue rectangle
+  theContext.fillStyle = "#0000ff";
+  theContext.fillRect(centerX, centerY, MAXWIDTH, MAXHEIGHT);
+  // Draw a white rectangle
+  theContext.fillStyle = "#ffffff";
+  theContext.fillRect(0, centerY, centerX, MAXHEIGHT);
+  // Draw a red rectangle
+  theContext.fillStyle = "#ff0000";
+  theContext.fillRect(centerX, 0, MAXWIDTH, centerY);
+
+  document.getElementById("theCanvas").focus();
+}
+
+// 
+// Change the background screen color to green.
+//
+function green() {
+  document.bgColor = "#00ff00";
+}
+
+// 
+// Change the background screen color to red.
+//
+function red() {
+  document.bgColor = "#ff0000";
+}
+
+// 
+// Change the background screen color to blue.
+//
+function blue() {
+  document.bgColor = "#0000ff";
+}
+
+// 
+// Change the background screen color to white.
+//
+function white() {
+  document.bgColor = "#ffffff";
+}
+
+// 
+// Change the background screen color to black.
+//
+function black() {
+  document.bgColor = "#000000";
+}
+
+
+// Calculate the Xoffset and Yoffset.
+// (This seems to change as the window loads.)
+function calibrate() {
+    // get canvas position
+    //var canvas = document.getElementById('theCanvas');
+    var obj = theCanvas;
+    var top = 0;
+    var left = 0;
+    // Go through the page to find where the canvas is.
+    // Later, we find the cursor's position, but it will be
+    // from the top left corner of the page. Thus, we can subtract
+    // this offset later.
+    // (Loop code by html5canvastutorials.com)
+    while (obj && obj.tagName != 'BODY') {
+        top += obj.offsetTop;
+        left += obj.offsetLeft;
+        obj = obj.offsetParent;
+    }
+    Xoffset = -left + window.pageXOffset;
+    Yoffset = -top + window.pageYOffset;
+}
+
+
+// User let up on the mouse button
+function mouseUpEvent() {
+  buttonPressed = false;
+  //document.getElementById("mouse_up_status").innerHTML = t + " Mouse up at " 
+  //  + mouseX + ", " + mouseY;
+}
+
+
+// User pressed the mouse button down.
+function mouseDownEvent() {
+
+  lastX = mouseX;
+  lastY = mouseY;  
+  buttonPressed = true;
+
+  if (DEBUG)
+    console.log(" Mouse down at " + mouseX + ", " + mouseY);
+
+  // Assign color according to the rectangle.
+  if ((mouseX > 0) && (mouseX < centerX) &&
+      (mouseY > 0) && (mouseY < centerY)) {
+    green();
+    whichSound = 1; 
+    thissound1.play();
+    if(aIndex < 4)
+    {
+      answer[aIndex] = aIndex;
+      aIndex++;
+    }
+  } else if ((mouseX > 0) && (mouseX < centerX) &&
+             (mouseY > centerY) && (mouseY < MAXHEIGHT)) {
+    white();
+    whichSound = 2; 
+    thissound2.play();
+    if(aIndex < 4)
+    {
+      answer[aIndex] = aIndex;
+      aIndex++;
+    }
+  } else if ((mouseX >= centerX) && (mouseX < MAXWIDTH) &&
+             (mouseY > 0) && (mouseY < centerY)) {
+    red();
+    whichSound = 3; 
+    thissound3.play();
+    if(aIndex < 4)
+    {
+      answer[aIndex] = aIndex;
+      aIndex++;
+    }
+  } else if ((mouseX >= centerX) && (mouseX < MAXWIDTH) &&
+             (mouseY >= centerY) && (mouseY < MAXHEIGHT)) {
+    blue();
+    whichSound = 4; 
+    thissound4.play();
+    if(aIndex < 4)
+    {
+      answer[aIndex] = aIndex;
+      aIndex++;
+    }
+  } else {
+    black();
+  } 
+
+}
+
+
+// Set up event listeners for the mouse. 
+// Based on code from:
+// http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+function setUpListeners()
+{
+ 
+    document.addEventListener('mousemove', function(evt)
+    {
+        var d=new Date();
+        var t=d.toLocaleTimeString();
+
+        // Find the relative mouse position.
+        mouseX = evt.clientX + Xoffset;
+        mouseY = evt.clientY + Yoffset;
+
+    }, false);
+
+    document.addEventListener('mousedown', mouseDownEvent, false);
+    document.addEventListener('mouseup', mouseUpEvent, false);
+};
+
+var sound2play = [0,1,2,3];
+var index = 0;
+
+function PlayNext()
+{
+
+  switch (sound2play[index])
+  {
+    case 0:
+      // play sound 1
+      thissound1.play();
+      break;
+    case 1:
+      // play sound 2
+      thissound2.play();
+      break;
+    case 2:
+      // play sound 3
+      thissound3.play();
+      break;
+    case 3:
+      // play sound 4
+      thissound4.play();
+      break;
+    default:
+      // turn off the Interval
+      clearInterval(myInterval);
+      break;
+  }
+  //console.log("played sound " + sound2play);
+
+  //sound2play++;
+
+  index++;
+}
+
+var myInterval;
+function startButton()
+{
+  index = 0;
+  aIndex = 0;
+  for (i = sound2play.length - 1; i > 0; i--)
+  {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = sound2play[i];
+    sound2play[i] = sound2play[j];
+    sound2play[j] = temp;
+  }
+  myInterval = self.setInterval(function(){PlayNext()}, 1000);
+  thissound5.play();
+  while(aIndex < 4)
+  {
+    showEverything();
+  }
+  for(i = 0; i < sound2play.length; i++)
+  {
+    if(answer[i] != sound2play[i])
+    {
+      victory = false;
+      break;
+    }
+  }
+  if(victory)
+  {
+    console.log(" You win! ");
+  }
+  else
+  {
+    console.log(" You lose! ");
+  }
+
+}
+
+//]]>
+</script>
+
+</head>
+<body onload="showEverything()" bgcolor="#0f0000" text="#ffffff">
+
+<center>
+Sound Example
+<br>
+
+<!-- <canvas id="theCanvas" tabindex="1" width="320" height="240"></canvas> -->
+<!-- http://stackoverflow.com/questions/3729034/javascript-html5-capture-keycode-and-write-to-canvas -->
+<script type="application/javascript">
+  document.write('<canvas id="theCanvas" tabindex="1" width="' 
+    + MAXWIDTH + '" height="'+ MAXHEIGHT + '"></canvas>');
+</script>
+
+<font face="monospace" color="white">
+<p id="status"></p>
+</font>
+
+<button type="button" onclick="startButton(); return false"/>Start</button>
+
+<br>
+<br>
+<!-- Example from http://www.phon.ucl.ac.uk/home/mark/audio/play10.htm -->
+<!-- With example from http://www.storiesinflight.com/html5/audio.html -->
+<audio id="audio1" src="grain_bag.ogg" preload="auto" >
+</audio>
+<audio id="audio2" src="napkin_rustling.ogg" preload="auto" >
+</audio>
+<audio id="audio3" src="toothpicks.ogg" preload="auto" >
+</audio>
+<audio id="audio4" src="glass_rubbing.ogg" preload="auto" >
+</audio>
+    <audio id="audio5" src="salt_shaking.ogg" preload="auto" >
+    </audio>
+    <audio id="audio6" src="grains_shaking.ogg" preload="auto" >
+    </audio>
+</center>
+
+</body></html>

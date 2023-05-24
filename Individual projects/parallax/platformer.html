@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Platformer</title>
+
+<!-- 
+Simple platformer program.
+
+-Michael Weeks, March 2021, based on simple_animation.html
+-->
+
+<script type="application/javascript">
+// <![CDATA[
+var INTERVAL = 50;
+var DEBUG = false; //true;
+
+// We will have a timer that executes every 50 ms.
+var myInterval;
+
+
+// *******************************************************
+//  Start defining variables used with images
+// *******************************************************
+var canvas;             // The canvas shown on the page.
+var ctx;                // The context, used to access the canvas.
+var CANVASWIDTH = 640;
+var CANVASHEIGHT = 480;
+
+var SpriteRow = 1;      // Row of the graphic to show
+var SpriteCol = 0;      // Col of the graphic to show
+var MaxSpriteRow = 8;   // How many rows of images
+var MaxSpriteCol = 8;  // How many columns of images
+
+var SpriteX = 308;      // Position of sprite on the canvas (middle).
+var SpriteYdefault = 380;      // Put sprite at the "ground" level.
+var SpriteY = 380;      // Put sprite at the "ground" level.
+var SpriteWidth = 32;   // Width, Height of each subimage
+var SpriteHeight = 32;
+var PlayerFaceLeftRow = 0;   // Row on sprite sheet to use when facing left
+var PlayerFaceRightRow = 1;  // Row on sprite sheet to use when facing right 
+var jumpSequence = 0;        // Is the player jumping? >0 means yes
+var mountain_offset = 0;     // We move the mountains, slowly
+var tree_offset = 0;         // We move the trees, medium
+var goal_offset = 0;         // Where the goal is (a flag)
+var obs_offset = 440;
+var TREEMAX;                 // Maximum value to start trees (on left)
+var MOUNTAINMAX;             // Maximum value to start mountains (on left)
+var TreeSpeed = 8;           // How much trees move in relation to sprite  
+var MountainSpeed = 4;       // How much mountaints move in relation to sprite  
+
+var trees_loaded = false;
+var mountains_loaded = false;
+var sprite_loaded = false;
+var pageLoadComplete = false;
+var obs_loaded = false;
+var SpriteImage = new Image();   // Sprite sheet
+SpriteImage.src = "manLRUD_32x32.png";
+var mountains   = new Image();    // distant mountains
+mountains.src   = "mountains.png";
+var trees       = new Image();    // trees, not too far away
+trees.src       = "trees.png";
+var TreeHeight  = 0;
+var TreeWidth   = 0;
+var TREE_HEIGHT_FROM_GROUND = 0;  // Vertical offset for trees
+var obstacles   = new Image();
+obstacles.src   = "features.png";
+var OBSHEIGHT   = 32;
+var OBSWIDTH    = 32;
+var obsCount    = 0;
+var obsY        = 380;
+
+// When an image loads, set a variable.
+// This way, we can start once we have everything.
+SpriteImage.onload = function()
+{
+  sprite_loaded = true;
+}
+trees.onload = function()
+{
+  TreeHeight = trees.height;
+  TreeWidth = trees.width;
+  // TREE_HEIGHT_FROM_GROUND controls where the tree line appears.
+  // The value 150 was found experimentally, and seems good.
+  TREE_HEIGHT_FROM_GROUND = 150; // CANVASHEIGHT - TreeHeight; 
+  TREEMAX = TreeWidth - CANVASWIDTH;
+  goal_offset = TREEMAX - 100;
+  //goal_offset = TREEMAX - 9000;  // for debugging only
+  trees_loaded = true;
+}
+mountains.onload = function()
+{
+  MOUNTAINMAX = mountains.width - CANVASWIDTH;
+  mountains_loaded = true;
+}
+obstacles.onload = function()
+{
+  obs_loaded = true;
+}
+// *******************************************************
+//  End defining variables used with images
+// *******************************************************
+
+
+// *******************************************************
+//  Start functions controlling the display
+// *******************************************************
+
+// 
+// Change the background screen color to skyblue.
+//
+function skyblue() {
+  document.bgColor = "#00eeff";
+}
+
+// 
+// Change the background screen color to red.
+//
+function red() {
+  document.bgColor = "#ff0000";
+}
+
+function green() {
+  document.bgColor = "#00ee11";
+}
+
+function eraseSprite() {
+  // erase sprite
+  ctx.clearRect(SpriteX, SpriteY, SpriteWidth, SpriteHeight);
+}
+
+
+// Erase the entire canvas.
+function eraseEverything() {
+  ctx.clearRect(0, 0, CANVASWIDTH, CANVASHEIGHT);
+}
+
+
+function drawEverything() {
+  // The drawImage command lets you copy a rectangle from an image 
+  // to the canvas. 
+  // It has the pattern
+  //   ctx.drawImage(a, b, c, d, e, f, g);
+  // which means
+  //   ctx = the context (on the canvas)
+  //   a = the image draw
+  //   b = the X offset into image a
+  //   c = the Y offset into image a
+  //   d = the width of the subimage
+  //   e = the height of the subimage
+  //   f = the X offset into the canvas, where you want the rectangle
+  //   g = the Y offset into the canvas, where you want the rectangle
+  //   h = the width of the rectangle on the canvas
+  //   i = the height of the rectangle on the canvas
+  //
+  // b,c,d,e define the source rectangle
+  // f,g,h,i define the destination rectangle
+  //
+  // Often, h = d and i = e, that is, the image you show on the canvas
+  // is the same size as the image on the sprite/tile sheet.
+  // However, if h<d and i<e, it will appear smaller.
+  //
+
+  // mountains and trees are long images, so only show CANVASWIDTH at a time.
+
+  // show mountains
+  ctx.drawImage(mountains, mountain_offset, 0,
+    CANVASWIDTH, CANVASHEIGHT, 0, 0, CANVASWIDTH, CANVASHEIGHT);
+
+  // show trees
+  ctx.drawImage(trees, tree_offset, 0,
+    CANVASWIDTH, TreeHeight, 0, TREE_HEIGHT_FROM_GROUND, CANVASWIDTH, TreeHeight);
+
+  // show obstacles
+  ctx.drawImage(obstacles, 32, 0,
+    OBSWIDTH, OBSHEIGHT, obs_offset, obsY, OBSWIDTH, OBSHEIGHT);
+  ctx.drawImage(obstacles, 32, 0,
+    OBSWIDTH, OBSHEIGHT, obs_offset + 100, obsY, OBSWIDTH, OBSHEIGHT);
+  ctx.drawImage(obstacles, 32, 0,
+    OBSWIDTH, OBSHEIGHT, obs_offset + 200, obsY, OBSWIDTH, OBSHEIGHT);
+  ctx.drawImage(obstacles, 32, 0,
+    OBSWIDTH, OBSHEIGHT, obs_offset + 300, obsY, OBSWIDTH, OBSHEIGHT);
+  ctx.drawImage(obstacles, 32, 0,
+    OBSWIDTH, OBSHEIGHT, obs_offset + 400, obsY, OBSWIDTH, OBSHEIGHT);
+
+  // show the player
+  drawSprite();
+}
+
+
+function drawSprite()
+{
+  // draw sprite
+  //ctx.drawImage(SpriteImage, SpriteX, SpriteY);
+  ctx.drawImage(SpriteImage, SpriteCol * SpriteWidth, SpriteRow * SpriteHeight, 
+    SpriteWidth, SpriteHeight, SpriteX, SpriteY, SpriteWidth, SpriteHeight); 
+
+
+  // update the next image to show
+  //SpriteCol++;
+  //if (SpriteCol >= MaxSpriteCol)
+  //  SpriteCol = 0;
+}
+// *******************************************************
+//  End functions controlling the display
+// *******************************************************
+
+
+// *******************************************************
+//  Start functions for loading data, and listeners
+// *******************************************************
+function Tick()
+{
+
+  // Erase the sprite from its current location.
+  eraseEverything();
+
+  // Move the player if jumping
+  if (jumpSequence > 0)
+  {
+    jumpSequence++;
+    if (jumpSequence > 32)
+    {
+      // Reset
+      SpriteY = SpriteYdefault;
+      jumpSequence = 0;
+    }
+    else if (jumpSequence > 16)
+    {
+      SpriteY += 4;
+    }
+    else
+    {
+      SpriteY -= 4; 
+    }
+    // Update SpriteCol, though this could be done twice if also pressing L/R.
+      // update the next image to show
+      SpriteCol++;
+      if (SpriteCol >= MaxSpriteCol)
+        SpriteCol = 0;
+  }
+
+  if(obsCount > 0 && jumpSequence == 0)
+    SpriteY = obsY - 33;
+  else
+    SpriteY = SpriteYdefault;
+  // Show a new image
+  drawEverything();
+
+  // Did the player win?
+  if (tree_offset >= goal_offset)
+  {
+    console.log("You win!");
+    document.getElementById("youwin").innerHTML = "You win!";
+    green();
+    clearInterval(myInterval);
+  }
+}
+
+
+function loadComplete()
+{
+  console.log("Load is complete."); 
+  canvas = document.getElementById("theCanvas");
+  ctx = canvas.getContext("2d");
+  pageLoadComplete = true;
+  myInterval = self.setInterval(function(){check4all_loaded()}, 500);
+}
+
+
+// Loading external resources is asynchronous. 
+// We cannot start until everything is loaded.
+// This function checks to see that everything loaded.
+function check4all_loaded()
+{
+  if (sprite_loaded  && trees_loaded  && mountains_loaded && pageLoadComplete && obs_loaded)
+  {
+    // Everything has loaded.
+    // Stop the check-loaded interval
+    clearInterval(myInterval);
+    skyblue(); // background color
+    eraseEverything();
+    drawEverything();
+    // Start a game interval
+    myInterval = self.setInterval(function(){Tick()}, INTERVAL);
+  }
+}
+var i = 0;
+// What to do when the user presses a key.
+function whenKeyPressed(key)
+{
+  switch (key)
+  {
+    case 28:  // Right arrow was pressed 
+      SpriteRow = PlayerFaceRightRow;
+      // update the next image to show
+      SpriteCol++;
+      if (SpriteCol >= MaxSpriteCol)
+        SpriteCol = 0;
+      // Make the background appear to move
+      if(obs_offset < 440 && obs_offset > 540)
+      {
+        tree_offset = tree_offset + TreeSpeed;
+        if (tree_offset >= TREEMAX)
+          tree_offset = TREEMAX - 1;
+        mountain_offset = mountain_offset + MountainSpeed;
+        if (mountain_offset >= MOUNTAINMAX)
+          mountain_offset = MOUNTAINMAX - 1;
+        obs_offset--;
+
+      }
+      else if(obsCount < 0)
+      {
+        tree_offset = tree_offset + TreeSpeed;
+        if (tree_offset >= TREEMAX)
+          tree_offset = TREEMAX - 1;
+        mountain_offset = mountain_offset + MountainSpeed;
+        if (mountain_offset >= MOUNTAINMAX)
+          mountain_offset = MOUNTAINMAX - 1;
+        obs_offset--;
+        if(obsCount < OBSWIDTH)
+          obsCount++;
+        else
+          obsCount = 0;
+      }
+      else
+      {
+        if(obsY - 32 > SpriteY)
+        {
+          tree_offset = tree_offset + TreeSpeed;
+          if (tree_offset >= TREEMAX)
+            tree_offset = TREEMAX - 1;
+          mountain_offset = mountain_offset + MountainSpeed;
+          if (mountain_offset >= MOUNTAINMAX)
+            mountain_offset = MOUNTAINMAX - 1;
+          obs_offset--;
+          if(obsCount < OBSWIDTH)
+            obsCount++;
+          else
+            obsCount = 0;
+        }
+      }
+
+      break;
+    case 29:  // Left arrow, ASCII 29 
+      SpriteRow = PlayerFaceLeftRow;
+      // update the next image to show
+      SpriteCol++;
+      if (SpriteCol >= MaxSpriteCol)
+        SpriteCol = 0;
+      // Make the background appear to move
+      if((obs_offset - 32) % 100 != 0)
+      {
+        tree_offset = tree_offset - TreeSpeed;
+        if (tree_offset < 0)
+          tree_offset = 0;
+        mountain_offset = mountain_offset - MountainSpeed;
+        if (mountain_offset < 0)
+          mountain_offset = 0;
+        obs_offset++;
+        if(obsCount < OBSWIDTH)
+          obsCount--;
+        else
+          obsCount = 0;
+      }
+      else
+      {
+        if(obsY - 32 > SpriteY)
+        {
+          tree_offset = tree_offset - TreeSpeed;
+          if (tree_offset < 0)
+          tree_offset = 0;
+          mountain_offset = mountain_offset - MountainSpeed
+          obs_offset++;
+        }
+        else
+          SpriteY = obsY - 32;
+      }
+      break;
+    case 30:  // Up arrow was pressed 
+      // Go up a row
+      //SpriteRow = SpriteRow - 1;
+      //if (SpriteRow < 0)
+      //  SpriteRow = MaxSpriteRow - 1;  
+      //SpriteCol = 0; // reset column to first image
+      break;
+    case 31:  // Down arrow was pressed 
+      // Go down a row
+      //SpriteRow = SpriteRow + 1;
+      //if (SpriteRow >= MaxSpriteRow)
+      //  SpriteRow = 0;
+      //SpriteCol = 0; // reset column to first image
+      break;
+    case 32:  // Space bar
+      // Make sure we do not have a jump already going.
+      if (jumpSequence == 0)
+      {
+        jumpSequence = 1;
+      }
+      break;
+  }
+}
+// *******************************************************
+//  End functions for loading data, and listeners
+// *******************************************************
+
+///]]>
+</script>
+
+</head>
+<body onload="loadComplete()" bgcolor="#0f0000" text="#ffffff">
+
+<script type="application/javascript">
+  document.write('<center>');
+  document.write('<canvas id="theCanvas" tabindex="1" width="' + CANVASWIDTH
+    + '" height="' + CANVASHEIGHT + '"></canvas>');
+  document.write('<h2>Space-bar = jump</h2>');
+  // Make youwin text 10% of view window
+  document.write('<h2 style="font-size:10vw" id="youwin"></h2>');
+  document.write('</center>');
+
+
+  //
+  // Set up a function to handle key-presses.
+  //
+  // This should work across most browsers.
+  document['onkeydown'] = function(event)
+  {
+    event = event || window.event;
+    var key = event.which || event.cursor;
+    // Check for a special key value, and map it to ASCII.
+    switch (key) {
+      case 37:  // Left arrow, ASCII 29
+        key = 29;
+        break;
+      case 38:  // Up arrow, ASCII 30
+        key = 30;
+        break;
+      case 39:  // Right arrow, ASCII 28
+        key = 28;
+        break;
+      case 40:  // Down arrow, ASCII 31
+        key = 31;
+        break;
+    }
+    //document.getElementById("keydown").innerHTML =
+    //  " key Down event, keycode " + key;
+    whenKeyPressed(key);
+  };
+</script>
+
+
+</body></html>
