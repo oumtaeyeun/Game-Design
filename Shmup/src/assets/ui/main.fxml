@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+
+<Pane prefWidth="650" prefHeight="800"
+      xmlns="http://javafx.com/javafx/8.0.60"
+      xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label fx:id="labelScore" translateX="15" translateY="10" textFill="white" />
+    <Label fx:id="labelBombs" translateX="15" translateY="32" textFill="yellow" text="0" />
+    <Label fx:id="labelLives" translateX="15" translateY="60" textFill="royalblue" />
+
+</Pane>
