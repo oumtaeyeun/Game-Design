@@ -1,0 +1,309 @@
+09:14:21.947 [FXGL Launcher Thread     ] DEBUG FXGL                 - FXGL logger initialized
+09:14:21.951 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<AudioPlayer>> initialized
+09:14:21.953 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Asset cacheSize=35
+09:14:21.954 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<AssetLoader>> initialized
+09:14:21.955 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<EventBus>> initialized
+09:14:21.961 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/cursors/fxgl_default.png
+09:14:21.991 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/sounds/core/notification.wav
+09:14:22.060 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/sounds/menu/select.wav
+09:14:22.062 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/sounds/menu/back.wav
+09:14:22.063 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/sounds/menu/press.wav
+09:14:22.066 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/fonts/Copperplate_Gothic_Light_Regular.ttf
+09:14:22.462 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/fonts/lucida_console.ttf
+09:14:22.469 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/css/fxgl_dark.css
+09:14:22.469 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/icons/fxgl_icon.png
+09:14:22.501 [FXGL Launcher Thread     ] DEBUG FXGLDisplay          - Using CSS: CSS(externalForm=jar:file:/C:/Users/oumta/Downloads/Shmup-20220925T201736Z-001/Shmup/lib/fxgl-0.3.6-uber.jar!/assets/ui/css/fxgl_dark.css)
+09:14:22.504 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<Display>> initialized
+09:14:22.507 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<Executor>> initialized
+09:14:22.520 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<NotificationService>> initialized
+09:14:22.521 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<Net>> initialized
+09:14:22.546 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<Gameplay>> initialized
+09:14:22.557 [FXGL Launcher Thread     ] DEBUG FXGLPooler           - Default pool size for objects = 128
+09:14:22.557 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<Pooler>> initialized
+09:14:22.558 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<ExceptionHandler>> initialized
+09:14:22.559 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<UIFactory>> initialized
+09:14:22.559 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<DialogFactory>> initialized
+09:14:22.559 [FXGL Launcher Thread     ] DEBUG FXGL                 - Service <<SceneFactory>> initialized
+09:14:22.559 [FXGL Launcher Thread     ] DEBUG FXGL                 - Loading FXGL system data
+09:14:22.566 [FXGL Launcher Thread     ] DEBUG IOTask               - Executing task: readDataTask(system/fxgl.bundle)
+09:14:22.575 [FXGL Launcher Thread     ] DEBUG FS                   - Reading from: system\fxgl.bundle
+09:14:22.588 [FXGL Launcher Thread     ] DEBUG IOTask               - Task succeeded: readDataTask(system/fxgl.bundle)
+09:14:22.588 [FXGL Launcher Thread     ] DEBUG Bundle               - Logging bundle: FXGL
+09:14:22.589 [FXGL Launcher Thread     ] DEBUG Bundle               - FXGL.offline.timer.version.check=2022-12-06T00:23:55.142
+09:14:22.589 [FXGL Launcher Thread     ] DEBUG GameApplication      - FXGL configuration complete
+09:14:22.590 [FXGL Launcher Thread     ] INFO  GameApplication      - FXGL configuration took:  1.462 sec
+09:14:22.591 [FXGL Launcher Thread     ] DEBUG GameApplication      - Logging game settings
+Title: Shmup
+Version: 0.1
+Width: 800
+Height: 600
+Fullscreen: false
+Intro: false
+Menus: false
+Profiling: false
+App Mode: DEVELOPER
+Menu Key: ESCAPE
+Services: []
+09:14:22.610 [FXGL Launcher Thread     ] DEBUG GameApplication      - Configuring GameApplication
+09:14:22.611 [FXGL Launcher Thread     ] DEBUG AppStateMachine      - Initializing application states
+09:14:22.615 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/cursors/fxgl_default.png
+09:14:22.621 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/cursors/fxgl_default.png
+09:14:22.679 [FXGL Launcher Thread     ] DEBUG GameWorld            - Game world initialized
+09:14:22.794 [FXGL Launcher Thread     ] DEBUG PhysicsWorld         - Physics world initialized: appHeight=600, physics.ppm=50.0
+09:14:22.805 [FXGL Launcher Thread     ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/cursors/fxgl_default.png
+09:14:22.832 [FXGL Launcher Thread     ] DEBUG GameScene            - Game scene initialized: 800x600
+09:14:22.858 [FXGL Launcher Thread     ] DEBUG Input                - Registered new binding: Pause - Esc
+09:14:22.874 [FXGL Launcher Thread     ] INFO  GameApplication      - Game configuration took:  0.264 sec
+09:14:22.880 [JavaFX Application Thread] DEBUG FXGLDisplay          - Target size: DoubleProperty [value: 800.0] x DoubleProperty [value: 600.0] @ 1.0
+09:14:22.880 [JavaFX Application Thread] DEBUG FXGLDisplay          - New size:    800.0 x 600.0 @ DoubleProperty [value: 1.0]
+09:14:22.880 [JavaFX Application Thread] DEBUG FXGLDisplay          - Opening primary stage
+09:14:22.920 [JavaFX Application Thread] DEBUG FXGLDisplay          - Stage shown
+09:14:22.920 [JavaFX Application Thread] DEBUG FXGLDisplay          - Root size: 800.0x600.0
+09:14:22.921 [JavaFX Application Thread] DEBUG FXGLDisplay          - Scene size: 800.0x600.0
+09:14:22.921 [JavaFX Application Thread] DEBUG FXGLDisplay          - Stage size: 818.0x647.0
+09:14:22.945 [JavaFX Application Thread] DEBUG GameApplication      - Running preInit()
+09:14:22.949 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Screenshot - P
+09:14:22.949 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Dev Options - CTRL+0
+09:14:22.951 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Up - W
+09:14:22.951 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Left - A
+09:14:22.952 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Down - S
+09:14:22.952 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Right - D
+09:14:22.954 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Paws - Space
+09:14:22.955 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Shoot Bullet - H
+09:14:22.955 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Use a bomb - J
+09:14:22.960 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/music/Shump.mp3
+09:14:23.582 [JavaFX Application Thread] DEBUG FXGLAudioPlayer      - Playing music Music [balance=0.0, volume=1.0, rate=1.0, cycleCount=2147483647]
+09:14:23.645 [JavaFX Application Thread] DEBUG GameApplication      - Starting main loop
+09:14:23.652 [JavaFX Application Thread] DEBUG StartupState         - STARTUP
+09:14:23.652 [JavaFX Application Thread] DEBUG GameApplication      - Starting new game
+09:14:23.653 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:14:23.653 [JavaFX Application Thread] DEBUG AppStateMachine      - StartupState -> LoadingState
+09:14:23.820 [JavaFX Application Thread] DEBUG InitAppTask          - @SetEntityFactory: [ShmupFactory]
+09:14:23.820 [JavaFX Application Thread] DEBUG InitAppTask          - @AddCollisionHandler: []
+09:14:23.824 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Clearing previous game
+09:14:23.825 [FXGL Background Thread 1 ] DEBUG GameWorld            - Clearing game world
+09:14:23.827 [FXGL Background Thread 1 ] DEBUG PhysicsWorld         - Clearing physics world
+09:14:23.827 [FXGL Background Thread 1 ] DEBUG GameScene            - Clearing game scene
+09:14:23.827 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Assets
+09:14:23.828 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Game
+09:14:23.864 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/spacebackground.gif
+09:14:24.183 [FXGL Background Thread 1 ] DEBUG GameScene            - Creating render group for layer: BACKGROUND(1000)
+09:14:24.187 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/plane0t.png
+09:14:24.201 [FXGL Background Thread 1 ] DEBUG GameScene            - Creating render group for layer: TOP(2147483647)
+09:14:24.207 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/cfodder.png
+09:14:24.212 [FXGL Background Thread 1 ] DEBUG IOTask               - Executing task: readDataTask(./highscore.dat)
+09:14:24.213 [FXGL Background Thread 1 ] DEBUG FS                   - Reading from: .\highscore.dat
+09:14:24.215 [FXGL Background Thread 1 ] DEBUG IOTask               - Task succeeded: readDataTask(./highscore.dat)
+09:14:24.215 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Physics
+09:14:24.216 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing UI
+09:14:24.217 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoader      - Loading from disk: /assets/ui/main.fxml
+09:14:24.368 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initialization Complete
+09:14:24.368 [FXGL Background Thread 1 ] INFO  InitAppTask          - Game initialization took: 0.543 sec
+09:14:24.371 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:14:24.371 [JavaFX Application Thread] DEBUG AppStateMachine      - LoadingState -> PlayState
+09:14:25.027 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/bullet.png
+09:14:25.260 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:25.538 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:25.587 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:25.706 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:25.919 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.089 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.252 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.411 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.573 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.718 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/cfodder2.png
+09:14:26.726 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/cbullet.png
+09:14:26.734 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:26.881 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.025 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.177 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.326 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.443 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:27.486 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.644 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.804 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:27.858 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:27.970 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.129 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.149 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:28.285 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.449 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.620 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.787 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:28.885 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:28.936 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.011 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:29.098 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.268 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.440 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.585 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:29.603 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.768 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:29.927 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.084 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.142 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:30.241 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.286 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:30.403 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.577 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.759 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.930 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:30.984 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:31.114 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:31.267 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:31.286 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:31.498 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:31.678 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:31.683 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:31.875 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:32.069 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:32.265 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:32.383 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:32.387 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder2.png
+09:14:32.388 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:32.472 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:32.660 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:32.829 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:33.035 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:33.092 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:33.101 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:33.227 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:33.452 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:33.516 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:33.633 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:33.795 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:33.809 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:33.837 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.031 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.223 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.402 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.509 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:34.516 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:34.562 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.641 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:34.722 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:34.877 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.052 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.214 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.217 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:35.225 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:35.378 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.548 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.722 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.764 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder2.png
+09:14:35.766 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:35.915 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:35.923 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:35.934 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:36.085 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:36.270 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:36.446 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:36.627 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:36.634 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:36.643 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:36.846 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:36.891 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:37.038 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:37.228 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:37.342 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:37.347 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:37.418 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:37.612 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:37.819 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.010 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.017 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:38.051 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:38.059 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:38.201 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.378 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.570 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.752 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:38.756 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:38.767 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:38.928 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:39.102 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:39.140 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder2.png
+09:14:39.142 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:39.275 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:39.454 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:39.468 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:39.476 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:39.662 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:39.844 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.175 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.179 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.267 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder2.png
+09:14:40.269 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.290 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:40.510 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:40.559 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.712 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:40.884 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.891 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:40.955 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:40.976 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.177 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:41.267 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.388 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:41.391 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:41.587 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.593 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:41.601 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.684 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.788 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:41.972 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:41.986 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:42.188 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:42.300 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:42.307 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:42.378 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:42.387 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:42.515 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:14:42.519 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/Boss.png
+09:14:42.530 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from disk: /assets/textures/bbullet.png
+09:14:42.532 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.562 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:42.609 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.610 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.684 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:42.692 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.693 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.759 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bullet.png
+09:14:42.771 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.772 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.859 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.860 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.943 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:42.944 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:43.009 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:43.017 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:14:43.026 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:43.027 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/bbullet.png
+09:14:43.107 [JavaFX Application Thread] DEBUG AppStateMachine      - Push state: DialogSubState
+09:14:43.107 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:14:43.107 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState -> DialogSubState
+09:15:42.418 [JavaFX Application Thread] DEBUG AppStateMachine      - Pop state: DialogSubState
+09:15:42.418 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:15:42.418 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState <- DialogSubState
+09:15:42.419 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder.png
+09:15:43.307 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cfodder2.png
+09:15:43.308 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:15:43.493 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Unpause - Space
+09:15:43.493 [JavaFX Application Thread] DEBUG AppStateMachine      - Push state: PauseState
+09:15:43.493 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:15:43.493 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState -> PauseState
+09:16:01.363 [JavaFX Application Thread] DEBUG AppStateMachine      - Pop state: PauseState
+09:16:01.363 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:16:01.363 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState <- PauseState
+09:16:01.875 [JavaFX Application Thread] DEBUG FXGLAssetLoader      - Loading from cache: /assets/textures/cbullet.png
+09:16:02.032 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Unpause - Space
+09:16:02.032 [JavaFX Application Thread] DEBUG AppStateMachine      - Push state: PauseState
+09:16:02.032 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+09:16:02.032 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState -> PauseState
+09:16:28.309 [JavaFX Application Thread] DEBUG FXGLEventBus         - Firing event: DisplayEvent[type=CLOSE_REQUEST]
+09:16:28.310 [JavaFX Application Thread] DEBUG GameApplication      - Exiting FXGL application
+09:16:28.310 [JavaFX Application Thread] DEBUG FXGL                 - Saving FXGL system data
+09:16:28.312 [JavaFX Application Thread] DEBUG IOTask               - Executing task: writeDataTask(system/fxgl.bundle)
+09:16:28.315 [JavaFX Application Thread] DEBUG FS                   - Writing to: system\fxgl.bundle
+09:16:28.320 [JavaFX Application Thread] DEBUG IOTask               - Task succeeded: writeDataTask(system/fxgl.bundle)
+09:16:28.320 [JavaFX Application Thread] DEBUG GameApplication      - Closing FXGL logger and exiting JavaFX
